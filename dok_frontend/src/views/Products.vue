@@ -3,7 +3,7 @@
     <div class="notification" v-for="(product, i) in products" :key="product._id">
       <p>
         <span class="tag is-primary">{{i + 1}}</span>
-        {{product.name}}
+        {{product.name}} {{"$" + product.price}}
       </p>
     </div>
   </div>
