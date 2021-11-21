@@ -1,10 +1,10 @@
 <template>
   <div id="app">
-    <div class="notification" v-for="(item, i) in items" :key="item._id">
-        <p> 
-          <span class="tag is-primary">{{i + 1}}</span>
-          {{item}}
-        </p>
+    <div class="notification" v-for="(product, i) in products" :key="product._id">
+      <p>
+        <span class="tag is-primary">{{i + 1}}</span>
+        {{product.name}}
+      </p>
     </div>
   </div>
 </template>
@@ -12,24 +12,18 @@
 <script>
 import axios from "axios";
 
-// This one works
-//const res = axios.get('http://localhost:3000/products').then(this.products = res.data);
-
 export default {
-  name: "products-s",
-
-  data() {
+  name: "product-s",
+  data(){
     return{
-      products: []
-    };
+      products:[],
+    }
   },
 
-  created(){
-    // This dosent fucking work
-    axios
-      .get('http://localhost:3000/products')
-      .then(res => this.products = res.data)
-      .catch(error => {console.error(error)})
+  async mounted(){
+    const res = await axios.get('http://localhost:3000/products')
+    console.log(res.data.products)
+    this.products = res.data.products;
   }
 }
 </script>
