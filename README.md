@@ -2,8 +2,7 @@
 
 everything is subject to change at some point
 
-need to:
-- figure out front end stuff
-- thats it ig idk
-
-uwu
+need to add:
+- add stripe
+- auth 
+- make website look not bad
