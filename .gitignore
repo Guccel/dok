@@ -106,5 +106,7 @@ dist
 dok.code-workspace
 
 dok_frontend/package-lock.json
-dok_backend/package-lock.json
 dok_frontend/yarn.lock
+
+dok_backend/package-lock.json
+dok_backend/yarn.lock
