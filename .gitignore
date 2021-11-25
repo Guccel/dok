@@ -103,6 +103,8 @@ dist
 # TernJS port file
 .tern-port
 
+dok.code-workspace
+
 dok_frontend/package-lock.json
 dok_backend/package-lock.json
 dok_frontend/yarn.lock
