@@ -20,18 +20,14 @@ router.post('/register', async (req, res) => {
   };
 
   // Check to see if the username is taken
-  await User.findOne({ username: req.body.username })
-    .exec()
-    .then((isUser) => {
-      if (!isUser) cred_res.username = true;
-    });
+  await User.findOne({ username: req.body.username }).then((isUser) => {
+    if (!isUser) cred_res.username = true;
+  });
 
   // Check to see if the email is already registered
-  await User.findOne({ email: req.body.email })
-    .exec()
-    .then((isEmail) => {
-      if (!isEmail) cred_res.email = true;
-    });
+  await User.findOne({ email: req.body.email }).then((isEmail) => {
+    if (!isEmail) cred_res.email = true;
+  });
 
   //todo Add password requirements
   cred_res.password = true;
@@ -69,7 +65,7 @@ router.post('/register', async (req, res) => {
 });
 
 //## POST /login
-router.post('/login', async function (req, res) {
+router.post('/login', async (req, res) => {
   // Check to see if the username exists
   User.findOne({ username: req.body.username }).then((user) => {
     if (!user) {
@@ -89,6 +85,7 @@ router.post('/login', async function (req, res) {
         };
 
         jwt.sign(payload, key, (err, token) => {
+          console.log(token);
           res.status(200).json({
             success: true,
             msg: 'You are logged in!',
