@@ -1,16 +1,19 @@
 <template>
-  <header>
-    <img src="../public/dok.svg" alt="" />
-    <nav>
-      <router-link to="/">HOME</router-link>
-      <router-link to="/about">ABOUT</router-link>
-      <router-link to="/products">PRODUCTS</router-link>
-      <router-link to="/admin">ADMIN</router-link>
-    </nav>
-  </header>
-  <main>
-    <router-view />
-  </main>
+  <div>
+    <header>
+      <img src="../public/dok.svg" alt="" />
+      <nav>
+        <router-link to="/">HOME</router-link>
+        <router-link to="/about">ABOUT</router-link>
+        <router-link to="/products">PRODUCTS</router-link>
+        <router-link to="/admin">ADMIN</router-link>
+        <router-link to="/auth">LOGIN</router-link>
+      </nav>
+    </header>
+    <main>
+      <router-view />
+    </main>
+  </div>
 </template>
 
 <style lang="scss">
@@ -47,6 +50,8 @@ header {
     height: 100%;
   }
   nav {
+    position: relative;
+    width: 100%;
     display: flex;
     margin-top: 8pt;
     gap: 60pt;
@@ -65,6 +70,12 @@ header {
         bottom: 4pt;
         background-color: black;
       }
+    }
+    a:last-child {
+      margin-left: auto;
+      right: 5rem;
+      top: 2pt;
+      font-size: 15pt;
     }
   }
 }

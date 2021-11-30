@@ -5,7 +5,6 @@ const passport = require('passport');
 
 const User = require('../models/user');
 
-const key = process.env.KEY;
 const router = express.Router();
 
 //# /users
@@ -84,7 +83,7 @@ router.post('/login', async (req, res) => {
           email: user.email,
         };
 
-        jwt.sign(payload, key, (err, token) => {
+        jwt.sign(payload, process.env.KEY, (err, token) => {
           console.log(token);
           res.status(200).json({
             success: true,

@@ -1,20 +1,20 @@
 <template>
-  <section id="app">
-    <div class="notification" v-for="(product, i) in products" :key="product._id">
-      <p>
-        <span class="tag is-primary">{{ i + 1 }}</span>
-        {{ product.name }} {{ '$' + product.price }}
-      </p>
+  <section id="products">
+    <div v-for="product in products" :key="product._id">
+      <Product :name="product.name" :price="product.price" :rating="product.rating" />
     </div>
   </section>
 </template>
 
 <script>
 import axios from 'axios';
+import Product from '../components/ProductItem';
 
 export default {
   name: 'product-s',
-  components: {},
+  components: {
+    Product,
+  },
   data() {
     return {
       products: [],
@@ -30,9 +30,15 @@ export default {
 </script>
 
 <style scoped>
-#app {
+#products {
   margin: auto;
   margin-top: 3rem;
   max-width: 700px;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(12rem, 1fr));
+  gap: 1rem;
+}
+product {
+  flex-grow: 1;
 }
 </style>

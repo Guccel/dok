@@ -7,7 +7,7 @@
 <script>
 /* eslint-disable */
 export default {
-  name: "home",
+  name: 'home',
   components: {},
 };
 </script>
