@@ -1,15 +1,5 @@
-<script context="module">
-	export const prerender = true;
-</script>
-
-
 <svelte:head>
-	<title>Home</title>
+  <title>Dokatsu</title>
 </svelte:head>
 
-<main>
-	<h1>home</h1>
-</main>
-
-<style>
-</style>
+<h1>Welcome to Dokatsu</h1>
