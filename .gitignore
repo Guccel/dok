@@ -1,8 +1,8 @@
 frontend/.env
-frontend/.next
 frontend/node_modules
 frontend/package-lock.json
 frontend/yarn.lock
+frontend/.svelte-kit
 
 backend/.env
 backend/package-lock.json
