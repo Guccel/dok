@@ -25,14 +25,17 @@ app.use((req, res, next) => {
 });
 
 //# routes
-const product_routes = require('./api/routes/products');
-app.use('/products', product_routes);
+const product_route = require('./api/routes/products');
+app.use('/products', product_route);
 
-const task_routes = require('./api/routes/tasks');
-app.use('/tasks', task_routes);
+const task_route = require('./api/routes/tasks');
+app.use('/tasks', task_route);
 
-const user_routes = require('./api/routes/users');
-app.use('/users', user_routes)
+const user_route = require('./api/routes/users');
+app.use('/users', user_route);
+
+const payment_route = require('./api/routes/payment');
+app.use('/payment', payment_route);
 
 app.use((req, res, next) => {
   const error = Error('Not Found');
