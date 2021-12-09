@@ -1,7 +1,7 @@
 //# imports
 const express = require('express');
 const router = express.Router();
-const mongoose = require('mongoose');
+const amongoose = require('mongoose');
 const Product = require('../models/product');
 
 //# /products
@@ -33,7 +33,7 @@ router.get('/', (req, res) => {
 //## POST
 router.post('/', (req, res) => {
   const product = new Product({
-    _id: new mongoose.Types.ObjectId(),
+    _id: new amongoose.Types.ObjectId(),
     name: req.body.name,
     price: req.body.price,
   });

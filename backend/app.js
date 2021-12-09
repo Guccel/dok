@@ -1,13 +1,13 @@
 //# imports
 const express = require('express');
 const morgan = require('morgan');
-const mongoose = require('mongoose');
+const amongoose = require('mongoose');
 
 //## express
 const app = express();
 
 //## mongoose
-mongoose.connect(process.env.MONGODB_URI);
+amongoose.connect(process.env.MONGODB_URI);
 
 //# middleware
 app.use(morgan('dev'));
