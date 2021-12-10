@@ -9,7 +9,7 @@ var paypalHelpers = require('../helpers/payment');
 
 router.get('/', (req, res) => {
   async function main() {
-    re = await paypalHelpers.out();
+    re = await paypalHelpers.makePayment();
     res.send({ token: re });
   }
   main();
