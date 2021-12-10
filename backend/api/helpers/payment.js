@@ -29,5 +29,5 @@ async function getAccessToken() {
 }
 
 module.exports = {
-  out,
+  getAccessToken,
 };

@@ -2,26 +2,12 @@
 const express = require('express');
 const morgan = require('morgan');
 const mongoose = require('mongoose');
-<<<<<<< HEAD
-const paypal = require('paypal-rest-sdk');
-=======
->>>>>>> parent of 022a608... Added amogus
 
 //## express
 const app = express();
 
 //## mongoose
 mongoose.connect(process.env.MONGODB_URI);
-<<<<<<< HEAD
-
-//## paypal
-paypal.configure({
-  mode: 'sandbox', //sandbox or live
-  client_id: process.env.PAYPAL_CLIENT_ID,
-  client_secret: process.env.PAYPAL_CLIENT_SECRET,
-});
-=======
->>>>>>> parent of 022a608... Added amogus
 
 //# middleware
 app.use(morgan('dev'));
