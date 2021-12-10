@@ -6,3 +6,5 @@ need to add:
 - add stripe
 - auth 
 - make website look not bad
+
+the hell is stripe
