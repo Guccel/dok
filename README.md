@@ -7,4 +7,4 @@ need to add:
 - auth 
 - make website look not bad
 
-@Ria8651 - I'm the best
+the hell is stripe
