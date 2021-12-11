@@ -3,8 +3,6 @@ const express = require('express');
 const router = express.Router();
 var paypalHelpers = require('../helpers/payment');
 
-// start payment process
-
 //# /payment/buy
 
 //## GET

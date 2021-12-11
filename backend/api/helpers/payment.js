@@ -69,6 +69,11 @@ async function getPaymentLink(req) {
           items,
         },
       ],
+      application_context: {
+        brand_name: 'Dok',
+        user_action: 'PAY_NOW',
+        return_url: 'https://duckduckgo.com/?q=it+worked&t=newext',
+      },
     },
   });
   return {
