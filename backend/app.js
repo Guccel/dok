@@ -25,6 +25,9 @@ app.use((req, res, next) => {
 });
 
 //# routes
+const payment_routes = require('./api/routes/payment');
+app.use('/payment', payment_routes);
+
 const product_routes = require('./api/routes/products');
 app.use('/products', product_routes);
 
@@ -32,7 +35,7 @@ const task_routes = require('./api/routes/tasks');
 app.use('/tasks', task_routes);
 
 const user_routes = require('./api/routes/users');
-app.use('/users', user_routes)
+app.use('/users', user_routes);
 
 app.use((req, res, next) => {
   const error = Error('Not Found');
