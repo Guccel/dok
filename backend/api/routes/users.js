@@ -90,9 +90,18 @@ router.post('/login', async (req, res) => {
           email: user.email,
         };
 
-        jwt.sign(payload, key, (err, token) => {
-          res.header('auth', token).send(token)
-        });
+        //let token = await getToken
+        //res.header('auth', token).send(token);
+
+        async () => {
+          jwt.sign(payload, key, (err, token) => {
+            res.header('auth', token).send(token);
+            console.log(token)
+            return token
+          });
+          return res.status(404)
+        }
+        
       } else {
         return res.status(404).json({
           success: false,
@@ -102,6 +111,11 @@ router.post('/login', async (req, res) => {
     });
   });
 });
+
+async function getToken(){
+  
+  return null
+}
 
 // Return logged in users details
 router.get('/myAccount', verify, async (req, res) => {
