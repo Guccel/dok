@@ -9,8 +9,8 @@ var paypalHelpers = require('../helpers/payment');
 
 router.get('/', (req, res) => {
   async function main() {
-    re = await paypalHelpers.makePayment();
-    res.send({ token: re });
+    re = await paypalHelpers.getPaymentLink();
+    res.json(re);
   }
   main();
 });

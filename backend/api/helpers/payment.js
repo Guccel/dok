@@ -28,7 +28,7 @@ async function getAccessToken() {
   return res.data.access_token;
 }
 
-async function makePayment() {
+async function getPaymentLink() {
   let total = '4';
   let item_total = '4';
   let shipping = '0';
@@ -57,9 +57,13 @@ async function makePayment() {
       ],
     },
   });
+  return {
+    id: res.data.id,
+    link: res.data.links[1].href,
+  };
 }
 
 module.exports = {
   getAccessToken,
-  makePayment,
+  getPaymentLink,
 };
