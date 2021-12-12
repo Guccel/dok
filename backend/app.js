@@ -7,7 +7,7 @@ const mongoose = require('mongoose');
 const app = express();
 
 //## mongoose
-mongoose.connect(process.env.MONGODB_URI);
+mongoose.connect(process.env.MONGODB_URI, { useNewUrlParser: true });
 
 //# middleware
 app.use(morgan('dev'));
@@ -23,6 +23,10 @@ app.use((req, res, next) => {
   }
   next();
 });
+
+require('./models/user');
+require('./models/oauth');
+app.use(require('./routes/oauth'));
 
 //# routes
 const payment_routes = require('./api/routes/payment');
