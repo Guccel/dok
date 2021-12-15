@@ -1,5 +1,24 @@
 <script>
+  import 'axios'
   let view = "login"
+
+  function onSubmit(e){
+    const formData = new FormData(e.target);
+    const data = {};
+    for (let field of formData) {
+      const [key, value] = field;
+      data[key] = value;
+    }
+    const out = axios({
+      method: 'GET',
+      url: 'localhost:300/auth/login',
+      data: {
+        username: data.username,
+        password: data.password,
+      }
+    })
+    console.log(out.data);
+  }
 </script>
 
 <svelte:head>
@@ -11,16 +30,16 @@
 <button on:click="{() => (view = "login")}">Login</button>
 <button on:click="{() => (view = "register")}">Register</button>
 {#if view == "login"}
-  <div>
+  <form on:submit|preventDefault="{onSubmit}">
     <p>Login</p>
     Username:
     <input type="text" name="username">
     Password:
     <input type="password" name="password">
     <button>Submit</button>
-  </div>
+  </form>
 {:else if view == "register"}
-  <div>
+  <form>
     <p>Register</p>
     Username:
     <input type="text">
@@ -31,5 +50,6 @@
     Confirm password:
     <input type="password">
     <button>Submit</button>
-  </div>
+  </form>
 {/if}
+

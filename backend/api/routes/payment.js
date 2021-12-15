@@ -6,12 +6,9 @@ var paypalHelpers = require('../helpers/payment');
 //# /payment/buy
 
 //## GET
-router.get('/buy', (req, res) => {
-  async function main() {
-    re = await paypalHelpers.getPaymentLink(req);
-    res.json(re);
-  }
-  main();
+router.get('/buy', async (req, res) => {
+  re = await paypalHelpers.getPaymentLink(req);
+  res.json(re);
 });
 
 router.get('/buy/help', (req, res) => {

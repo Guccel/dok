@@ -1,10 +1,8 @@
+//# imports
 const express = require('express');
-const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
-const passport = require('passport');
-
+const { scryptSync, randomBytes } = require('crypto');
 const User = require('../models/user');
-const verify = require('./verfiyToken');
 
 const key = process.env.KEY;
 const router = express.Router();
@@ -13,6 +11,7 @@ const router = express.Router();
 
 //## POST /register
 router.post('/register', async (req, res) => {
+  body = req.body;
   cred_res = {
     username: false,
     email: false,
@@ -21,14 +20,14 @@ router.post('/register', async (req, res) => {
   };
 
   // Check to see if the username is taken
-  await User.findOne({ username: req.body.username })
+  await User.findOne({ username: body.username })
     .exec()
     .then((isUser) => {
       if (!isUser) cred_res.username = true;
     });
 
   // Check to see if the email is already registered
-  await User.findOne({ email: req.body.email })
+  await User.findOne({ email: body.email })
     .exec()
     .then((isEmail) => {
       if (!isEmail) cred_res.email = true;
@@ -38,7 +37,7 @@ router.post('/register', async (req, res) => {
   cred_res.password = true;
 
   // Check to see if passwords match
-  if (req.body.password === req.body.confirm_password) {
+  if (body.password === body.confirm_password) {
     cred_res.confirm_password = true;
   }
 
@@ -49,69 +48,38 @@ router.post('/register', async (req, res) => {
     });
   }
 
-  const newUser = new User({
-    username: req.body.username,
-    email: req.body.email,
-    password: null,
-  });
-
   // Encrypt and send
-  bcrypt.genSalt(10, (err, salt) => {
-    bcrypt.hash(req.body.password, salt, (err, hash) => {
-      newUser.password = hash;
-      newUser.save().then(() => {
-        return res.status(201).json({
-          success: true,
-          msg: 'User is now registered',
-        });
-      });
-    });
+  const salt = randomBytes(16).toString('hex');
+  const password_hashed = scryptSync(body.password, salt, 64).toString('hex');
+
+  const newUser = new User({
+    username: body.username,
+    email: body.email,
+    password: password_hashed,
+    salt,
   });
+  newUser
+    .save()
+    .then((res) => {
+      console.log(res);
+    })
+    .catch((err) => {
+      console.log(err);
+    });
+
+  return res.status(200).json(newUser);
 });
 
-//## POST /login
-router.post('/login', async (req, res) => {
-  // Check to see if the username exists
-  User.findOne({ username: req.body.username }).then((user) => {
-    if (!user) {
-      return res.status(404).json({
-        success: false,
-        msg: 'Username not found',
-      });
-    }
-
-    // Check to see it the passwords match
-    bcrypt.compare(req.body.password, user.password).then((isMatch) => {
-      if (isMatch) {
-        const payload = {
-          _id: user._id,
-          type: user.type,
-          username: user.username,
-          email: user.email,
-        };
-
-        jwt.sign(payload, key, (err, token) => {
-          res.header('auth', token).send(token)
-        });
-      } else {
-        return res.status(404).json({
-          success: false,
-          msg: 'Incorrect password',
-        });
-      }
-    });
-  });
-});
-
-// Return logged in users details
-router.get('/myAccount', verify, async (req, res) => {
-  user = jwt.decode(req.header('auth'))
+//## GET /account-details
+router.get('/account-details', (req, res) => {
+  body = req.body;
+  user = User.findById(body._id);
 
   return res.status(200).json({
     type: user.type,
     username: user.username,
-    email: user.email
-  })
-})
+    email: user.email,
+  });
+});
 
 module.exports = router;

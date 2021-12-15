@@ -24,10 +24,6 @@ app.use((req, res, next) => {
   next();
 });
 
-require('./models/user');
-require('./models/oauth');
-app.use(require('./routes/oauth'));
-
 //# routes
 const payment_routes = require('./api/routes/payment');
 app.use('/payment', payment_routes);
@@ -40,6 +36,9 @@ app.use('/tasks', task_routes);
 
 const user_routes = require('./api/routes/users');
 app.use('/users', user_routes);
+
+const auth_routes = require('./api/routes/auth');
+app.use('/auth', auth_routes);
 
 app.use((req, res, next) => {
   const error = Error('Not Found');
