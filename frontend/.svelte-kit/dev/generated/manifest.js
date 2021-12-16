@@ -24,7 +24,9 @@ export const routes = [
 	[/^\/about\/?$/, [c[0], c[5]], [c[1]]],
 
 	// src/routes/login/index.svelte
-	[/^\/login\/?$/, [c[0], c[6]], [c[1]]]
+	[/^\/login\/?$/, [c[0], c[6]], [c[1]]],
+
+	
 ];
 
 // we import the root layout/error components eagerly, so that

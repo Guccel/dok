@@ -10,8 +10,8 @@ const router = express.Router();
 
 //# /auth
 
-//## GET /verify
-router.get('/verify', async (req, res) => {
+//## POST /verify
+router.post('/verify', async (req, res) => {
   body = req.body;
   const user = await User.findById(body._id);
   const out = await authHelpers.verifyToken(body.token, user.salt);
@@ -22,7 +22,7 @@ router.get('/verify', async (req, res) => {
   }
 });
 
-//## GET /login
+//## POST /login
 router.post('/login', async (req, res) => {
   body = req.body;
   // Check to see if the username exists
