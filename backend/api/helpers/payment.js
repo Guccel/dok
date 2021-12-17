@@ -1,4 +1,3 @@
-const mongoose = require('mongoose');
 const Product = require('../models/product');
 const axios = require('axios');
 const qs = require('qs');
@@ -48,7 +47,6 @@ async function getPaymentLink(req) {
   }
   let shippingTotal = 0;
   let total = String(itemTotal + shippingTotal);
-  console.log(items);
   const res = await axios({
     method: 'POST',
     url: 'https://api-m.sandbox.paypal.com/v2/checkout/orders', //  Change to 'https://api-m.paypal.com' for live
