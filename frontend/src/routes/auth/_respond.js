@@ -4,6 +4,7 @@ export function respond(body) {
   }
 
   const json = JSON.stringify(body.user);
+  console.log(body);
   const value = Buffer.from(json).toString('base64');
 
   return {
