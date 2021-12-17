@@ -16,19 +16,20 @@ router.post('/verify', async (req, res) => {
   const user = await User.findById(body._id);
   const out = await authHelpers.verifyToken(body.token, user.salt);
   if (out.success) {
-    res.status(200).json(out.payload);
+    return res.status(200).json(out.payload);
   } else {
-    res.status(400);
+    return res.status(400);
   }
 });
 
 //## POST /login
 router.post('/login', async (req, res) => {
   body = req.body;
+  console.log(body);
   // Check to see if the username exists
   User.findOne({ username: body.username }).then((user) => {
     if (!user) {
-      res.status(404).json({
+      return res.status(404).json({
         success: false,
         msg: 'Username not found',
       });

@@ -41,7 +41,7 @@ const auth_routes = require('./api/routes/auth');
 app.use('/auth', auth_routes);
 
 app.use((req, res, next) => {
-  const error = Error('Not Found');
+  const error = Error(`Not Found ${req.path}`);
   error.status = 404;
   next(error);
 });
