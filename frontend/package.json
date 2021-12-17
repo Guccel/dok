@@ -12,5 +12,9 @@
     "@sveltejs/kit": "next",
     "svelte": "^3.44.0"
   },
-  "type": "module"
+  "type": "module",
+  "dependencies": {
+    "axios": "^0.24.0",
+    "cookie": "^0.4.1"
+  }
 }

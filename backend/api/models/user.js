@@ -1,26 +1,33 @@
-const mongoose = require("mongoose");
+const crypto = require('crypto');
+const mongoose = require('mongoose');
 
-const UserSchema = new mongoose.Schema({
-  type: {
-    type: String,
-    default: "User"
+const UserSchema = new mongoose.Schema(
+  {
+    username: {
+      type: String,
+      required: true,
+      unique: true,
+    },
+    email: {
+      type: String,
+      required: true,
+      unique: true,
+    },
+    type: {
+      type: String,
+      default: 'User',
+    },
+    password: {
+      type: String,
+      required: true,
+    },
+    salt: {
+      type: String,
+    },
   },
-  username: {
-    type: String, 
-    required: true
-  },
-  email: {
-    type: String, 
-    required: true
-  },
-  password: {
-    type: String, 
-    required: true
-  },
-  date: {
-    type: Date, 
-    default: Date.now
+  {
+    timestamps: true,
   }
-})
+);
 
 module.exports = User = mongoose.model('users', UserSchema);

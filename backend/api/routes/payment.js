@@ -3,17 +3,12 @@ const express = require('express');
 const router = express.Router();
 var paypalHelpers = require('../helpers/payment');
 
-// start payment process
-
 //# /payment/buy
 
 //## GET
-router.get('/buy', (req, res) => {
-  async function main() {
-    re = await paypalHelpers.getPaymentLink(req);
-    res.json(re);
-  }
-  main();
+router.get('/buy', async (req, res) => {
+  re = await paypalHelpers.getPaymentLink(req);
+  res.json(re);
 });
 
 router.get('/buy/help', (req, res) => {
