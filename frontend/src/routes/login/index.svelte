@@ -12,43 +12,26 @@
 
 <script>
   import axios from 'axios';
+  import { createForm } from 'svelte-forms-lib';
 
   import { session } from '$app/stores';
   import { goto } from '$app/navigation';
-  import { post } from '$lib/utils.js';
+  import { post } from '$lib/login/utils.js';
 
-  let username = 'tester';
-  let password = 'password123';
-  let errors = null;
-
-  const body = {
-    username: 'tester',
-    password: 'password123',
-  };
-
-  console.log(body.toString());
-  const load = fetch('http://localhost:3000/auth/login', {
-    method: 'POST',
-    'Content-Type': 'application/json',
-    body: JSON.stringify(body),
+  const { form, handleSubmit } = createForm({
+    initialValues: {
+      username: '',
+      password: '',
+    },
+    onSubmit: (values) => {
+      promise = post({
+        username: values.username,
+        password: values.password,
+      });
+    },
   });
-  async function submit(event) {
-    // const response = await axios({
-    //   method: 'POST',
-    //   url: 'http://localhost:3000/auth/login',
-    //   headers: {
-    //     'content-type': 'application/json',
-    //   },
-    //   data: { username, password },
-    // });
-    // const response = await post(`auth/login`, { username, password });
-    // console.log(response.data);
-    // errors = response.errors;
-    // if (response.user) {
-    //   $session.user = response.user;
-    //   goto('/');
-    // }
-  }
+
+  let promise;
 
   export const view = 'login';
 </script>
@@ -57,21 +40,26 @@
   <title>Login</title>
 </svelte:head>
 
-{#await load then data}
-  {data}
+{#await promise}
+  <p>...waiting</p>
+{:then data}
+  <p>{data}</p>
+{:catch error}
+  <p>{error.message}</p>
 {/await}
 
 <h1>Login</h1>
 <button on:click={() => (view = 'login')}>Login</button>
 <button on:click={() => (view = 'register')}>Register</button>
+
 {#if view == 'login'}
-  <form on:submit={submit}>
+  <form on:submit|preventDefault={handleSubmit}>
     <p>Login</p>
     Username:
-    <input type="text" name="username" />
+    <input type="text" name="username" bind:value={$form.username} />
     Password:
-    <input type="password" name="password" />
-    <button>Submit</button>
+    <input type="password" name="password" bind:value={$form.password} />
+    <button type="submit">submit</button>
   </form>
 {:else if view == 'register'}
   <form>
