@@ -1,4 +1,5 @@
 //# imports
+const cors = require('cors');
 const express = require('express');
 const morgan = require('morgan');
 const mongoose = require('mongoose');
@@ -10,9 +11,10 @@ const app = express();
 mongoose.connect(process.env.MONGODB_URI, { useNewUrlParser: true });
 
 //# middleware
-app.use(morgan('dev'));
+app.use(cors());
 app.use(express.urlencoded({ extended: false }));
 app.use(express.json());
+app.use(morgan('dev'));
 
 app.use((req, res, next) => {
   res.header('Access-Control-Allow-Origin', '*');
