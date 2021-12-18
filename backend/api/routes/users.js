@@ -67,6 +67,59 @@ router.post('/register', async (req, res) => {
       console.log(err);
     });
 
+<<<<<<< HEAD
+//## POST /login
+router.post('/login', async (req, res) => {
+  // Check to see if the username exists
+  User.findOne({ username: req.body.username }).then((user) => {
+    if (!user) {
+      return res.status(404).json({
+        success: false,
+        msg: 'Username not found',
+      });
+    }
+
+    // Check to see it the passwords match
+    bcrypt.compare(req.body.password, user.password).then((isMatch) => {
+      if (isMatch) {
+        const payload = {
+          _id: user._id,
+          type: user.type,
+          username: user.username,
+          email: user.email,
+        };
+
+        //let token = await getToken
+        //res.header('auth', token).send(token);
+
+        async () => {
+          jwt.sign(payload, key, (err, token) => {
+            res.header('auth', token).send(token);
+            console.log(token)
+            return token
+          });
+          return res.status(404)
+        }
+        
+      } else {
+        return res.status(404).json({
+          success: false,
+          msg: 'Incorrect password',
+        });
+      }
+    });
+  });
+});
+
+async function getToken(){
+  
+  return null
+}
+
+// Return logged in users details
+router.get('/myAccount', verify, async (req, res) => {
+  user = jwt.decode(req.header('auth'))
+=======
   return res.status(200).json(newUser);
 });
 
@@ -74,6 +127,7 @@ router.post('/register', async (req, res) => {
 router.get('/account-details', (req, res) => {
   body = req.body;
   user = User.findById(body._id);
+>>>>>>> 5e70f4a6b575df41b1daf64575776a726e2083e0
 
   return res.status(200).json({
     type: user.type,
