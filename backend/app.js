@@ -39,8 +39,8 @@ app.use('/tasks', task_routes);
 const user_routes = require('./api/routes/users');
 app.use('/users', user_routes);
 
-const auth_routes = require('./api/routes/auth');
-app.use('/auth', auth_routes);
+const session_routes = require('./api/routes/session');
+app.use('/session', session_routes);
 
 app.use((req, res, next) => {
   const error = Error(`Not Found ${req.path}`);

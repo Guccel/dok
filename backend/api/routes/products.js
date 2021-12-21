@@ -1,8 +1,8 @@
 //# imports
 const express = require('express');
-const router = express.Router();
 const mongoose = require('mongoose');
 const Product = require('../models/product');
+const router = express.Router();
 
 //# /products
 
@@ -32,10 +32,10 @@ router.get('/', (req, res) => {
 
 //## POST
 router.post('/', (req, res) => {
+  body = req.body;
   const product = new Product({
-    _id: new mongoose.Types.ObjectId(),
-    name: req.body.name,
-    price: req.body.price,
+    name: body.name,
+    price: body.price,
   });
   product
     .save()
@@ -71,11 +71,12 @@ router.get('/:product_id', (req, res) => {
 
 //## PATCH
 router.patch('/:product_id', (req, res) => {
+  body = req.body;
   const product_id = req.params.product_id;
   Product.updateOne(
     { _id: product_id },
     {
-      $set: req.body,
+      $set: body,
       $inc: { __v: 1 },
     }
   )

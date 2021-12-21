@@ -1,19 +1,41 @@
-// import * as cookie from 'cookie';
+import * as cookie from 'cookie';
+import axios from 'axios';
 
-// export async function handle({ request, resolve }) {
-//   const cookies = cookie.parse(request.headers.cookie || '');
-//   const jwt = cookies.jwt && Buffer.from(cookies.jwt, 'base64').toString('utf-8');
-//   request.locals.user = jwt ? JSON.parse(jwt) : null;
-//   return await resolve(request);
-// }
+async function verify(session_id) {
+  const response = await axios({
+    method: 'POST',
+    url: 'http://localhost:3000/session/verify',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    data: { session_id },
+  });
+  return response.data.isValid;
+}
 
-// export function getSession({ locals }) {
-//   return {
-//     user: locals.user && {
-//       username: locals.user.username,
-//       email: locals.user.email,
-//       image: locals.user.image,
-//       bio: locals.user.bio,
-//     },
-//   };
-// }
+import { session } from '$app/stores';
+import { browser } from '$app/env';
+import Cookies from 'js-cookie';
+
+export async function handle({ request, resolve }) {
+  const publicPages = ['/', '/about', '/login'];
+
+  const cookies = cookie.parse(request.headers.cookie || '');
+  const session_id = cookies.session_id;
+
+  request.locals.user = cookies;
+  request.locals.user.authenticated = cookies.session ? true : false;
+
+  const response = await resolve(request);
+
+  return {
+    ...response,
+  };
+}
+
+export function getSession(request) {
+  const user = request.locals.user;
+  return {
+    user,
+  };
+}

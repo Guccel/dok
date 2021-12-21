@@ -17,6 +17,7 @@
     "axios": "^0.24.0",
     "cookie": "^0.4.1",
     "felte": "^0.8.7",
+    "js-cookie": "^3.0.1",
     "svelte-forms-lib": "^2.0.0"
   }
 }

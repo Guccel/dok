@@ -1,37 +1,31 @@
 <script context="module">
-  export async function load({ session }) {
-    if (session.user) {
-      return {
-        status: 302,
-        redirect: '/',
-      };
-    }
-    return {};
-  }
 </script>
 
 <script>
-  import axios from 'axios';
   import { createForm } from 'svelte-forms-lib';
+  import { browser } from '$app/env';
+  import Cookies from 'js-cookie';
 
-  import { session } from '$app/stores';
   import { goto } from '$app/navigation';
-  import { post } from '$lib/login/utils.js';
+  import { login, setCookie } from '$lib/login/utils.js';
 
   const { form, handleSubmit } = createForm({
     initialValues: {
       username: '',
       password: '',
     },
-    onSubmit: (values) => {
-      promise = post({
+
+    onSubmit: async (values) => {
+      const response = await login({
         username: values.username,
         password: values.password,
       });
+      if (response.success) {
+        console.log(response);
+        setCookie(response.session_id);
+      }
     },
   });
-
-  let promise;
 
   export const view = 'login';
 </script>
@@ -39,14 +33,6 @@
 <svelte:head>
   <title>Login</title>
 </svelte:head>
-
-{#await promise}
-  <p>...waiting</p>
-{:then data}
-  <p>{data}</p>
-{:catch error}
-  <p>{error.message}</p>
-{/await}
 
 <h1>Login</h1>
 <button on:click={() => (view = 'login')}>Login</button>
