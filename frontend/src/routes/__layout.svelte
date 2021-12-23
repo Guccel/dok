@@ -1,6 +1,10 @@
 <script context="module">
+  import { session } from '$app/stores';
+
   const publicPages = ['/', '/about', '/login'];
 </script>
+
+<p>logged in: {$session.user.authenticated}</p>
 
 <nav>
   <a href="/">Home</a>

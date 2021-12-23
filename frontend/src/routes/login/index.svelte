@@ -5,9 +5,10 @@
   import { createForm } from 'svelte-forms-lib';
   import { browser } from '$app/env';
   import Cookies from 'js-cookie';
+  import { session } from '$app/stores';
 
   import { goto } from '$app/navigation';
-  import { login, setCookie } from '$lib/login/utils.js';
+  import { login_submit, logout_submit } from './utils';
 
   const { form, handleSubmit } = createForm({
     initialValues: {
@@ -16,14 +17,8 @@
     },
 
     onSubmit: async (values) => {
-      const response = await login({
-        username: values.username,
-        password: values.password,
-      });
-      if (response.success) {
-        console.log(response);
-        setCookie(response.session_id);
-      }
+      $session;
+      login_submit(values);
     },
   });
 
@@ -38,26 +33,13 @@
 <button on:click={() => (view = 'login')}>Login</button>
 <button on:click={() => (view = 'register')}>Register</button>
 
-{#if view == 'login'}
-  <form on:submit|preventDefault={handleSubmit}>
-    <p>Login</p>
-    Username:
-    <input type="text" name="username" bind:value={$form.username} />
-    Password:
-    <input type="password" name="password" bind:value={$form.password} />
-    <button type="submit">submit</button>
-  </form>
-{:else if view == 'register'}
-  <form>
-    <p>Register</p>
-    Username:
-    <input type="text" />
-    Email:
-    <input type="email" />
-    Password:
-    <input type="password" />
-    Confirm password:
-    <input type="password" />
-    <button>Submit</button>
-  </form>
-{/if}
+<form on:submit|preventDefault={handleSubmit}>
+  <p>Login</p>
+  Username:
+  <input type="text" name="username" bind:value={$form.username} />
+  Password:
+  <input type="password" name="password" bind:value={$form.password} />
+  <button type="submit">submit</button>
+</form>
+
+<button on:click={logout_submit}>logout</button>

@@ -35,6 +35,9 @@ router.post('/login', async (req, res) => {
     return res.status(400);
   }
 
+  //TODO implement better handling for if user already has session
+  Session.findOneAndDelete({ email: user.email });
+
   const _id = uuid.v4();
   const session = new Session({
     _id,

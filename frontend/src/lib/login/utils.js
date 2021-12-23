@@ -19,3 +19,9 @@ export async function setCookie(session_id) {
     sameSite: 'lax',
   });
 }
+
+export function logout() {
+  Cookies.remove('session_id');
+
+  //TODO add logout route in backend
+}

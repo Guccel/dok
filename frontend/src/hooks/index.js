@@ -23,10 +23,16 @@ export async function handle({ request, resolve }) {
   const cookies = cookie.parse(request.headers.cookie || '');
   const session_id = cookies.session_id;
 
+  if (typeof request.locals.user === 'undefined') {
+    request.locals.user = {
+      authenticated: false,
+    };
+  }
   request.locals.user = cookies;
   request.locals.user.authenticated = cookies.session ? true : false;
 
   const response = await resolve(request);
+  console.log(request);
 
   return {
     ...response,
