@@ -19,7 +19,6 @@ router.post('/verify', async (req, res) => {
 //## POST /login
 router.post('/login', async (req, res) => {
   body = req.body;
-  console.log(body);
 
   // Check to see if the username exists
   const user = await User.findOne({ username: body.username });

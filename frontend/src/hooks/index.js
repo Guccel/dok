@@ -13,26 +13,21 @@ async function verify(session_id) {
   return response.data.isValid;
 }
 
-import { session } from '$app/stores';
-import { browser } from '$app/env';
-import Cookies from 'js-cookie';
-
 export async function handle({ request, resolve }) {
   const publicPages = ['/', '/about', '/login'];
 
   const cookies = cookie.parse(request.headers.cookie || '');
-  const session_id = cookies.session_id;
 
   if (typeof request.locals.user === 'undefined') {
     request.locals.user = {
       authenticated: false,
     };
   }
+
   request.locals.user = cookies;
-  request.locals.user.authenticated = cookies.session ? true : false;
+  request.locals.user.authenticated = cookies.session_id ? true : false;
 
   const response = await resolve(request);
-  console.log(request);
 
   return {
     ...response,
