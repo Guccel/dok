@@ -26,6 +26,16 @@ app.use((req, res, next) => {
   next();
 });
 
+//# security
+if (false)
+  app.use((req, res, next) => {
+    if (req.get('origin') !== 'http://localhost:4000') {
+      console.log('bad');
+      return res.status(404).json({});
+    }
+    next();
+  });
+
 //# routes
 const payment_routes = require('./api/routes/payment');
 app.use('/payment', payment_routes);

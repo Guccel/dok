@@ -14,8 +14,6 @@ async function verify(session_id) {
 }
 
 export async function handle({ request, resolve }) {
-  const publicPages = ['/', '/about', '/login'];
-
   const cookies = cookie.parse(request.headers.cookie || '');
 
   if (typeof request.locals.user === 'undefined') {
@@ -24,8 +22,22 @@ export async function handle({ request, resolve }) {
     };
   }
 
-  request.locals.user = cookies;
-  request.locals.user.authenticated = cookies.session_id ? true : false;
+  request.locals.user = {
+    session_id: cookies.session_id,
+    authenticated: cookies.session_id ? true : false,
+  };
+
+  // Test if path starts with "/admin"
+  if (RegExp(/^(\/admin\/?)/).exec(request.path)) {
+    console.log('bad');
+    if (!request.locals.user.authenticated && !(request.locals.user.type == 'admin'))
+      return {
+        status: 300,
+        headers: {
+          location: '/',
+        },
+      };
+  }
 
   const response = await resolve(request);
 

@@ -1,7 +1,5 @@
 <script context="module">
   import { session } from '$app/stores';
-
-  const publicPages = ['/', '/about', '/login'];
 </script>
 
 <p>logged in: {$session.user.authenticated}</p>
@@ -10,7 +8,9 @@
   <a href="/">Home</a>
   <a href="/about">About</a>
   <a href="/products">Products</a>
-  <a href="/login">Sign up</a>
+  <a href="/user">Profile</a>
+  <a href="/user/login">Sign up</a>
+  <!-- <a href="/admin">admin</a> -->
 </nav>
 
 <main>

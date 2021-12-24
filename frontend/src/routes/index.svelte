@@ -1,5 +1,4 @@
 <script>
-  import { session } from '$app/stores';
 </script>
 
 <svelte:head>
@@ -7,5 +6,3 @@
 </svelte:head>
 
 <h1>Welcome to Dokatsu</h1>
-
-{JSON.stringify($session)}

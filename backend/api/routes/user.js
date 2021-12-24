@@ -52,20 +52,15 @@ router.post('/register', async (req, res) => {
   const salt = randomBytes(16).toString('hex');
   const password_hashed = scryptSync(body.password, salt, 64).toString('hex');
 
-  const newUser = new User({
+  const newUser = await new User({
     username: body.username,
     email: body.email,
     password: password_hashed,
     salt,
   });
-  newUser
-    .save()
-    .then((res) => {
-      console.log(res);
-    })
-    .catch((err) => {
-      console.log(err);
-    });
+  newUser.save().catch((err) => {
+    console.log(err);
+  });
 
   return res.status(200).json({ success: true });
 });
