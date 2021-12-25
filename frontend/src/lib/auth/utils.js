@@ -28,6 +28,7 @@ export async function login_submit(values) {
       user: {
         authenticated: true,
         session_id: response.data.session_id,
+        data: response.data.session_data,
       },
     }));
   }
@@ -44,6 +45,7 @@ export function logout_submit() {
     user: {
       authenticated: false,
       session_id: '',
+      data: {},
     },
   }));
 }

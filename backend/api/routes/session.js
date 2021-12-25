@@ -11,9 +11,10 @@ router = express.Router();
 //## POST /verify
 router.post('/verify', async (req, res) => {
   body = req.body;
-  console.log(body);
-  const out = await session_helpers.verify(body.session);
-  return res.status(200).json({ out });
+  if (!body) return res.status(200).json({ isValid: false });
+  const out = await session_helpers.verify(body.session_id);
+  console.log(out);
+  return res.status(200).json(out);
 });
 
 //## POST /login
@@ -51,6 +52,10 @@ router.post('/login', async (req, res) => {
   return res.status(200).json({
     success: true,
     session_id: _id,
+    session_data: {
+      email: user.email,
+      type: user.type,
+    },
   });
 });
 

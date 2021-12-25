@@ -10,7 +10,7 @@ async function verify(session_id) {
     },
     data: { session_id },
   });
-  return response.data.isValid;
+  return response.data;
 }
 
 export async function handle({ request, resolve }) {
@@ -22,15 +22,22 @@ export async function handle({ request, resolve }) {
     };
   }
 
+  const sessionInfo = await verify(cookies.session_id || null);
+
   request.locals.user = {
     session_id: cookies.session_id,
-    authenticated: cookies.session_id ? true : false,
+    authenticated: sessionInfo.isValid,
+    data: {},
   };
+  if (request.locals.user.authenticated) {
+    request.locals.user.data = sessionInfo.session_data;
+  }
 
+  console.log(request.locals);
   // Test if path starts with "/admin"
   if (RegExp(/^(\/admin\/?)/).exec(request.path)) {
-    console.log('bad');
-    if (!request.locals.user.authenticated && !(request.locals.user.type == 'admin'))
+    console.log('bad', request.locals.user.type);
+    if (!request.locals.user.authenticated && !(request.locals.user.type == 'Admin'))
       return {
         status: 300,
         headers: {
