@@ -1,23 +1,39 @@
 <script context="module">
   export async function load() {
-    fetch('http://localhost:3000/products').then((res) => res.json());
+    let products = await getProducts();
+    return {
+      props: {
+        products: products.product_list,
+      },
+    };
   }
 </script>
 
 <script>
+  import { getProducts } from '$lib/utils/admin/products.js';
+
+  export let products;
+
+  let i = 0;
+  let selectedProduct = '';
+
+  function getProduct(product) {
+    selectedProduct = product;
+  }
+  function editProduct() {}
+  function deleteProduct() {}
+  function newProduct() {}
 </script>
 
-<svelte:head>
-  <title>Products</title>
-</svelte:head>
+{JSON.stringify(selectedProduct)}
+<br>
+<button on:click={editProduct}>edit</button>
+<button on:click={deleteProduct}>delete</button>
+<button on:click={newProduct}>new</button>
+<br /> <br />
 
-{#await load then data}
-  <div>
-    {#each data.products as product}
-      <a href="/products/{product._id}">
-        <img alt="bepis" src="/favicon.png" />
-        <p>{product.name} ${product.price}</p>
-      </a>
-    {/each}
-  </div>
-{/await}
+{#each products as product}
+  {JSON.stringify(product)}
+  <button on:click={getProduct(product)}>Select</button>
+  <br />
+{/each}

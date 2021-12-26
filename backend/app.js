@@ -36,7 +36,7 @@ if (false)
     next();
   });
 
-//# routes
+//# routes /
 const payment_routes = require('./api/routes/payment');
 app.use('/payment', payment_routes);
 
@@ -51,6 +51,10 @@ app.use('/user', user_routes);
 
 const session_routes = require('./api/routes/session');
 app.use('/session', session_routes);
+
+//# routes /admin
+const admin_routes = require('./api/routes/admin/products');
+app.use('/admin/products', admin_routes);
 
 app.use((req, res, next) => {
   const error = Error(`Not Found ${req.path}`);
