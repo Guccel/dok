@@ -11,7 +11,7 @@
 </script>
 
 <script>
-  import { logout_submit } from '$lib/auth/utils.js';
+  import { logout_submit } from '$lib/utils/auth.js';
 </script>
 
 <p>user</p>

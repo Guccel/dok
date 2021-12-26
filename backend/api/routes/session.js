@@ -13,7 +13,6 @@ router.post('/verify', async (req, res) => {
   body = req.body;
   if (!body) return res.status(200).json({ isValid: false });
   const out = await session_helpers.verify(body.session_id);
-  console.log(out);
   return res.status(200).json(out);
 });
 

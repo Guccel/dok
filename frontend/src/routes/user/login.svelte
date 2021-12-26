@@ -15,7 +15,7 @@
   import { goto } from '$app/navigation';
   import { session } from '$app/stores';
 
-  import { login_submit } from '$lib/auth/utils.js';
+  import { login_submit } from '$lib/utils/auth.js';
 
   const { form, handleSubmit } = createForm({
     initialValues: {

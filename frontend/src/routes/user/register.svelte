@@ -15,7 +15,7 @@
   import { goto } from '$app/navigation';
   import { session } from '$app/stores';
 
-  import { register_submit } from '$lib/auth/utils.js';
+  import { register_submit } from '$lib/utils/auth.js';
 
   let message = '';
 

@@ -1,7 +1,8 @@
 admin
 
-<!-- <nav>
-  <a href="./products">products</a>
-</nav> -->
+<nav>
+  <a href="/admin/products">products</a>
+  <a href="/admin/users">users</a>
+</nav>
 
 <slot />

@@ -33,10 +33,8 @@ export async function handle({ request, resolve }) {
     request.locals.user.data = sessionInfo.session_data;
   }
 
-  console.log(request.locals);
   // Test if path starts with "/admin"
   if (RegExp(/^(\/admin\/?)/).exec(request.path)) {
-    console.log('bad', request.locals.user.type);
     if (!request.locals.user.authenticated && !(request.locals.user.type == 'Admin'))
       return {
         status: 300,
