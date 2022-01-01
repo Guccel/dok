@@ -28,7 +28,7 @@ export async function login_submit(values) {
       user: {
         authenticated: true,
         session_id: response.data.session_id,
-        data: response.data.session_data,
+        session_data: response.data.session_data,
       },
     }));
   }
