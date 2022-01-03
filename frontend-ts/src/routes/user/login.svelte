@@ -10,7 +10,11 @@
 	}
 </script>
 
+<<<<<<< HEAD
 <script>
+=======
+<script lang="ts">
+>>>>>>> main
 	import { goto } from '$app/navigation';
 	import { session } from '$app/stores';
 	import axios from 'axios';
@@ -53,11 +57,19 @@
 <form on:submit|preventDefault={login_submit}>
 	<label for="username">Username</label>
 	<input id="username" name="username" type="text" />
+<<<<<<< HEAD
 	<br />
 	<label for="password">Password</label>
 	<input id="password" name="password" type="password" />
 	<br />
 
+=======
+
+	<label for="password">Password</label>
+	<input id="password" name="password" type="password" />
+
+	<br />
+>>>>>>> main
 	<button type="submit">Login</button>
 </form>
 
