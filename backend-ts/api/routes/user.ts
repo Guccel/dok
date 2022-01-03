@@ -13,7 +13,6 @@ router.post('/register', async (req, res) => {
   const body: {
     username: string;
     email: string;
-<<<<<<< HEAD
     password: string;
   } = req.body;
 
@@ -32,30 +31,7 @@ router.post('/register', async (req, res) => {
   const password_hashed = scryptSync(body.password, salt, 64).toString('hex');
 
   // save
-=======
-    type: 'user' | 'admin';
-    password: string;
-  } = req.body;
 
-  // Check to see if the username is taken
-  await User.findOne({ username: body.username })
-    .exec()
-    .then((isUsername: object) => {
-      if (isUsername) return res.status(409).json({ msg: 'username exists' });
-    });
-
-  // Check to see if the email is already registered
-  await User.findOne({ email: body.email })
-    .exec()
-    .then((isEmail: object) => {
-      if (isEmail) return res.status(409).json({ msg: 'email exists' });
-    });
-
-  // Encrypt
-  const salt = randomBytes(16).toString('hex');
-  const password_hashed = scryptSync(body.password, salt, 64).toString('hex');
-
->>>>>>> main
   new User({
     username: body.username,
     email: body.email,
@@ -63,9 +39,5 @@ router.post('/register', async (req, res) => {
     salt,
   }).save();
 
-<<<<<<< HEAD
   return res.status(201).json();
-=======
-  return res.status(201);
->>>>>>> main
 });

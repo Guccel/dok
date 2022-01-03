@@ -12,10 +12,8 @@
 
 <script lang="ts">
 	import type { User_Type } from 'src/global';
-<<<<<<< HEAD
-=======
 
->>>>>>> main
+
 	import { session } from '$app/stores';
 
 	import Cookies from 'js-cookie';
@@ -25,25 +23,12 @@
 
 		const user: User_Type = {
 			authenticated: false,
-<<<<<<< HEAD
 			session_id: null,
 			data: { type: 'unauthenticated' }
 		};
 
 		session.update((store) => ({ ...store, user }));
-=======
-			session_id: '',
-			data: {}
-		};
-		session.update((store) => ({
-			...store,
-			user: {
-				authenticated: false,
-				session_id: '',
-				data: {}
-			}
-		}));
->>>>>>> main
+
 	};
 </script>
 

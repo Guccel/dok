@@ -10,7 +10,6 @@
 	}
 </script>
 
-<<<<<<< HEAD
 <script lang="ts">
 	import { v4 as uuidv4 } from 'uuid';
 	let uuid: string = 'password';
@@ -87,10 +86,5 @@
 	<button type="submit">register</button>
 </form>
 
-=======
-<script>
-	import { goto } from '$app/navigation';
-</script>
 
->>>>>>> main
 <button on:click={() => goto('./login')}>login</button>
