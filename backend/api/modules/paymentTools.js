@@ -1,11 +1,5 @@
-//# imports
 const axios = require('axios');
-const { btoa } = require('buffer');
-const express = require('express');
-const querystring = require('querystring');
-const Product = require('../models/product');
-const router = express.Router();
-var paypalHelpers = require('../helpers/payment');
+const paypal = require('@paypal/paypal-js');
 
 async function getProducts(req) {
   const promises = [];
@@ -42,22 +36,15 @@ async function getProducts(req) {
     return { success: true, products: product_list };
   }
 }
-
-async function getAccessToken() {
-  username = process.env.PAYPAL_CLIENT_ID;
-  passowrd = process.env.PAYPAL_CLIENT_SECRET;
-  var creds = btoa(`${username}:${passowrd}`);
-  const url = 'https://api-m.sandbox.paypal.com/v1/oauth2/token';
-  const res = await fetch(url, {
-    method: 'POST',
-    headers: {
-      Authorization: `Basic ${creds}`,
-      'Content-Type': 'application/x-www-form-urlencoded',
-    },
-    body: btoa('grant_type:client_credentials'),
-  });
-  // console.log(res.body);
-}
+// function getAccessToken() {
+//   const res = axios.post('https://api-m.sandbox.paypal.com/v1/oauth2/token', {
+//     auth: {
+//       username: process.env.PAYPAL_CLIENT_ID,
+//       password: process.env.PAYPAL_CLIENT_SECRET,
+//     },
+//   });
+//   console.log(res);
+// }
 
 // paypal
 //   .loadScript({ 'client-id': process.env.PAYPAL_CLIENT_ID })
@@ -69,23 +56,4 @@ async function getAccessToken() {
 //     console.error('failed to load the PayPal JS SDK script', err);
 //   });
 
-//# /payment
-router.post('/', (req, res) => {
-  async function main() {
-    const paypalProducts_list = await getProducts(req);
-    if (paypalProducts_list.success === false) {
-      res.status(404).json({
-        msg: paypalProducts_list.msg,
-      });
-    }
-
-    getAccessToken();
-
-    res.status(200).json({
-      out: paypalProducts_list.products,
-    });
-  }
-  main();
-});
-//# exports
-module.exports = router;
+module.exports = getProducts;

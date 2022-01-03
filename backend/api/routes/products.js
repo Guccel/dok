@@ -7,7 +7,7 @@ const router = express.Router();
 //# /products
 
 //## GET
-router.get('/', (req, res) => {
+router.post('/', (req, res) => {
   Product.find()
     .select('_id name price')
     .exec()
