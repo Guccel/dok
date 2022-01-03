@@ -1,5 +1,5 @@
 //# imports
-import express from 'express';
+import { Router } from 'express';
 import Session from '../models/session';
 import User from '../models/user';
 import { verify, getData } from '../helpers/session';
@@ -7,7 +7,7 @@ import { scryptSync } from 'crypto';
 import { v4 as uuidv4 } from 'uuid';
 
 //# exports
-const router = express.Router();
+const router = Router();
 export default router;
 
 //# verify session_id
@@ -49,7 +49,7 @@ router.post('/login', async (req, res) => {
 
   // Check to see if password is correct
   if (user.password !== scryptSync(body.password, user.salt, 64).toString('hex')) {
-    return res.status(403).json({
+    return res.status(260).json({
       msg: 'password incorrect',
     });
   }

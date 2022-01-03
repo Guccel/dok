@@ -8,13 +8,8 @@ async function verifySession(session_id: string): Promise<boolean> {
 	const response: AxiosResponse = await axios({
 		method: 'POST',
 		url: 'http://localhost:3000/session/verify',
-<<<<<<< HEAD
 		headers: { 'Content-Type': 'application/json' },
-=======
-		headers: {
-			'Content-Type': 'application/json'
-		},
->>>>>>> main
+
 		data: { session_id }
 	});
 	return response.data;
@@ -24,13 +19,7 @@ async function getSessionData(session_id: string): Promise<UserData_Type> {
 	const response: AxiosResponse = await axios({
 		method: 'POST',
 		url: 'http://localhost:3000/session/get-data',
-<<<<<<< HEAD
 		headers: { 'Content-Type': 'application/json' },
-=======
-		headers: {
-			'Content-Type': 'application/json'
-		},
->>>>>>> main
 		data: { session_id }
 	});
 	return response.data;
@@ -45,11 +34,8 @@ export const handle: Handle = async ({ request, resolve }) => {
 	if (typeof request.locals.user === 'undefined') request.locals.user = { authenticated: false, data: {} };
 
 	// initialise variables
-<<<<<<< HEAD
 	const session_id: string = cookies.session_id || null;
-=======
-	const session_id: string = cookies.session_id;
->>>>>>> main
+
 	const authenticated: boolean = session_id ? await verifySession(cookies.session_id) : false;
 	const data: UserData_Type = authenticated ? await getSessionData(session_id) : { type: 'unauthenticated' };
 
@@ -62,17 +48,7 @@ export const handle: Handle = async ({ request, resolve }) => {
 	//# rerouting
 	// test if path starts with "/admin"
 	if (RegExp(/^(\/admin\/?)/).exec(request.url.toString())) {
-<<<<<<< HEAD
 		if (!authenticated && !(data.type == 'admin')) return { status: 300, headers: { location: '/' } };
-=======
-		if (!authenticated && !(data.type == 'admin'))
-			return {
-				status: 300,
-				headers: {
-					location: '/'
-				}
-			};
->>>>>>> main
 	}
 
 	//# create and return response

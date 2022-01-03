@@ -1,9 +1,9 @@
 //# imports
-import express from 'express';
-import Product from '../models/Product';
+import { Router } from 'express';
+import Product from '../models/product';
 
 //# exports
-const router = express.Router();
+const router = Router();
 export default router;
 
 //# get all product ids

@@ -1,11 +1,11 @@
 //# imports
-import express from 'express';
+import { Router } from 'express';
 import { Type_UserRegisterBody } from '../../types';
 import { scryptSync, randomBytes } from 'crypto';
 import User from '../models/user';
 
 //# exports
-const router = express.Router();
+const router = Router();
 export default router;
 
 //# register user
@@ -24,7 +24,7 @@ router.post('/register', async (req, res) => {
 
   // check if username or password registered
   if (doesUsernameExist || doesEmailExist) {
-    return res.status(409).json();
+    return res.status(260).json();
   }
   // encrypt password
   const salt = randomBytes(16).toString('hex');
