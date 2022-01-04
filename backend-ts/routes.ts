@@ -5,7 +5,7 @@ export default routes;
 
 //# routes /
 import product_routes from './api/routes/product';
-routes.use('/products', product_routes);
+routes.use('/product', product_routes);
 
 import session_routes from './api/routes/session';
 routes.use('/session', session_routes);
