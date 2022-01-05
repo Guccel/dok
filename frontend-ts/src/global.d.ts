@@ -10,3 +10,12 @@ export interface UserData_Type {
 	type: 'unauthenticated' | 'user' | 'admin';
 	email?: string;
 }
+
+export interface ProductAll_Type {
+	name: string;
+	price: number;
+	description: number;
+	rating?: number;
+	tags?: string[];
+	options?: string[];
+}
