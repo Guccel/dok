@@ -19,7 +19,7 @@ router.post('/', async (req, res) => {
 });
 
 //# get more info on product id
-router.post('/:_id', async (req, res) => {
+router.post('/get/:_id', async (req, res) => {
   const _id: string = req.params._id;
   const body: {
     getInfo: 'basic' | 'all';
@@ -39,9 +39,24 @@ router.post('/create', async (req, res) => {
     name: string;
     price: number;
     description: string;
-    type: string;
+    tags: string[];
   } = req.body;
   const product_new = new Product(body);
   const product_newOut = await product_new.save();
   return res.status(201).json({ _id: product_newOut._id });
+});
+
+//# edit product
+router.patch('/patch/:_id', async (req, res) => {
+  const _id: string = req.params._id;
+  const body: {
+    name?: string;
+    price?: number;
+    description?: string;
+    type?: string;
+  } = req.body;
+  console.log(body);
+
+  await Product.updateOne({ _id }, body);
+  return res.status(200).json();
 });

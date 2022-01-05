@@ -19,9 +19,9 @@
 	// import { login_submit } from '$lib/utils/auth.js';
 
 	const login_submit = async (event) => {
-		const form_data = new FormData(event.target);
-		const username = form_data.get('username');
-		const password = form_data.get('password');
+		const formData = new FormData(event.target);
+		const username = formData.get('username');
+		const password = formData.get('password');
 
 		const response = await axios({
 			method: 'POST',

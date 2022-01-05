@@ -6,6 +6,7 @@ const productSchema = new Schema(
   {
     name: { type: String, required: true },
     price: { type: Number, required: true },
+    rating: { type: Number },
     description: { type: String, default: '' },
     tags: { type: Array, default: [] },
     options: { type: Array, default: [] },
