@@ -23,6 +23,16 @@
 
 	export let product_ids: Array<string>;
 
+	// this doesnt actually do anything at the moment but isnt a neccessity for now
+	async function updateProduct_ids() {
+		// const response = await axios({
+		// 	method: 'POST',
+		// 	url: 'http://localhost:3000/product',
+		// 	headers: { 'Content-Type': 'application/json' },
+		// 	data: {}
+		// });
+	}
+
 	let selectedProduct_id = '';
 	let currentProduct: ProductAll_Type;
 
@@ -36,6 +46,7 @@
 	let newTag = '';
 
 	let pageView: 'none' | 'view' | 'edit' | 'new' | 'delete' = 'none';
+
 	let message = '';
 
 	async function selectProduct(_id: string) {
@@ -50,14 +61,15 @@
 		pageView = 'view';
 	}
 
-	//! does not work
 	async function editProduct_submit() {
 		const response = await axios({
 			method: 'PATCH',
-			url: `http://localhost:3000/product/${selectedProduct_id}`,
+			url: `http://localhost:3000/product/patch/${selectedProduct_id}`,
 			headers: { 'Content-Type': 'application/json' },
 			data: currentProduct
 		});
+		selectProduct(selectedProduct_id);
+		updateProduct_ids();
 	}
 	async function newProduct_submit() {
 		if (!(newProduct.name && newProduct.price && newProduct.description)) {
@@ -80,6 +92,7 @@
 				options: []
 			};
 			selectProduct(response.data._id);
+			updateProduct_ids();
 		}
 		message = '';
 	}
@@ -103,17 +116,13 @@
 	Options: {currentProduct.options}<br />
 	<button on:click={editProduct_submit}>confirm</button>
 {:else if pageView === 'new'}
-	<label for="name">name</label>
-	<input name="name" type="text" bind:value={newProduct.name} />
+	name: <input name="name" type="text" bind:value={newProduct.name} />
 	<br />
-	<label for="price">price</label>
-	<input name="price" type="text" bind:value={newProduct.price} />
+	price: <input name="price" type="text" bind:value={newProduct.price} />
 	<br />
-	<label for="description">description</label>
-	<input name="description" type="text" bind:value={newProduct.description} />
+	description: <input name="description" type="text" bind:value={newProduct.description} />
 	<br />
-
-	<label for="tags"> tags: </label>
+	tags:
 	<ul>
 		{#each newProduct.tags as tag, i}
 			<li>
@@ -143,8 +152,7 @@
 		</li>
 	</ul>
 
-	<label for="options">options</label>
-	<input name="options" type="text" />
+	options:<input name="options" type="text" />
 	<br />
 	{message}<br />
 	<button on:click={newProduct_submit}>create prodcut</button>
@@ -172,6 +180,7 @@
 >
 <br /> <br />
 
+!!!does not update automatically, need to reload page to see changes  in list <br />
 {#each product_ids as _id}
 	<button on:click={() => selectProduct(_id)}>
 		<Product {_id} type="basic" />

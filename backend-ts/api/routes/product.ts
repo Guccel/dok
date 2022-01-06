@@ -22,15 +22,12 @@ router.post('/', async (req, res) => {
 router.post('/get/:_id', async (req, res) => {
   const _id: string = req.params._id;
   const body: {
-    getInfo: 'basic' | 'all';
+    method: 'basic' | 'all';
   } = req.body;
-  if (body.getInfo == 'basic') {
-    const response = await Product.findById(_id).select('_id name price description');
-    return res.status(200).json(response);
-  } else if (body.getInfo == 'all') {
-    const response = await Product.findById(_id);
-    return res.status(200).json(response);
-  }
+  let response: any;
+  if (body.method == 'basic') response = await Product.findById(_id).select('_id name price description');
+  else if (body.method == 'all') response = await Product.findById(_id);
+  return res.status(200).json(response);
 });
 
 //# create product
@@ -53,10 +50,20 @@ router.patch('/patch/:_id', async (req, res) => {
     name?: string;
     price?: number;
     description?: string;
-    type?: string;
+    tags?: [];
+    options?: [];
   } = req.body;
   console.log(body);
 
-  await Product.updateOne({ _id }, body);
+  await Product.findOneAndUpdate(
+    { _id },
+    {
+      name: body.name,
+      price: body.price,
+      description: body.description,
+      tags: body.tags,
+      options: body.options,
+    }
+  );
   return res.status(200).json();
 });
