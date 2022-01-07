@@ -15,7 +15,7 @@
 		method: 'POST',
 		url: `http://localhost:3000/product/get/${_id}`,
 		headers: { 'Content-Type': 'application/json' },
-		data: { getInfo: type }
+		data: { method: type }
 	});
 </script>
 

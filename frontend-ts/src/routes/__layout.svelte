@@ -5,7 +5,7 @@
 {JSON.stringify($session)}
 <p>
 	logged in: {$session.user.authenticated}<br />
-	is admin: {$session.user.data.type == 'Admin'}
+	is admin: {$session.user.data.type == 'admin'}
 </p>
 
 <nav>
@@ -14,7 +14,7 @@
 	<a href="/products">Products</a>
 	<a href="/user">Profile</a>
 	<a href="/user/login">Sign up</a>
-	{#if $session.user.data.type == 'Admin'}
+	{#if $session.user.data.type == 'admin'}
 		<a href="/admin">admin</a>
 	{/if}
 </nav>

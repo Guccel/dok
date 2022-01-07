@@ -65,5 +65,12 @@ router.patch('/patch/:_id', async (req, res) => {
       options: body.options,
     }
   );
-  return res.status(200).json();
+  return res.status(204);
 });
+
+//# delete product
+// router.delete('/delete/:_id', async (req, res) => {
+//   const _id: string = req.params._id;
+//   await Product.findByIdAndDelete(_id);
+//   res.status(204);
+// });

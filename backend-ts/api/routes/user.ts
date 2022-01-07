@@ -1,6 +1,5 @@
 //# imports
 import { Router } from 'express';
-import { Type_UserRegisterBody } from '../../types';
 import { scryptSync, randomBytes } from 'crypto';
 import User from '../models/user';
 

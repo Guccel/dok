@@ -33,21 +33,11 @@
 		// });
 	}
 
+	let pageView: 'none' | 'view' | 'edit' | 'new' | 'delete' = 'none';
+	let message = '';
+
 	let selectedProduct_id = '';
 	let currentProduct: ProductAll_Type;
-
-	let newProduct: ProductAll_Type = {
-		name: null,
-		price: null,
-		description: null,
-		tags: [],
-		options: []
-	};
-	let newTag = '';
-
-	let pageView: 'none' | 'view' | 'edit' | 'new' | 'delete' = 'none';
-
-	let message = '';
 
 	async function selectProduct(_id: string) {
 		selectedProduct_id = _id;
@@ -58,6 +48,7 @@
 			data: { getInfo: 'all' }
 		});
 		currentProduct = response.data;
+		message = '';
 		pageView = 'view';
 	}
 
@@ -71,6 +62,29 @@
 		selectProduct(selectedProduct_id);
 		updateProduct_ids();
 	}
+
+	let newProduct: ProductAll_Type = {
+		name: null,
+		price: null,
+		description: null,
+		tags: [],
+		options: []
+	};
+	let newTag = '';
+
+	async function deleteProduct_submit() {
+		if (confirm(`delete ${selectedProduct_id} ?`)) {
+			const response = await axios({
+				method: 'DELETE',
+				url: `http://localhost:3000/product/delete/${selectedProduct_id}`
+			});
+			pageView = 'none';
+			message = 'deleted';
+		} else {
+			message = 'cancelled';
+		}
+	}
+
 	async function newProduct_submit() {
 		if (!(newProduct.name && newProduct.price && newProduct.description)) {
 			message = 'required field blank';
@@ -116,12 +130,9 @@
 	Options: {currentProduct.options}<br />
 	<button on:click={editProduct_submit}>confirm</button>
 {:else if pageView === 'new'}
-	name: <input name="name" type="text" bind:value={newProduct.name} />
-	<br />
-	price: <input name="price" type="text" bind:value={newProduct.price} />
-	<br />
-	description: <input name="description" type="text" bind:value={newProduct.description} />
-	<br />
+	name: <input name="name" type="text" bind:value={newProduct.name} /><br />
+	price: <input name="price" type="text" bind:value={newProduct.price} /><br />
+	description: <input name="description" type="text" bind:value={newProduct.description} /><br />
 	tags:
 	<ul>
 		{#each newProduct.tags as tag, i}
@@ -151,11 +162,18 @@
 			</button>
 		</li>
 	</ul>
-
-	options:<input name="options" type="text" />
-	<br />
+	options:<input name="options" type="text" /><br />
 	{message}<br />
 	<button on:click={newProduct_submit}>create prodcut</button>
+{:else if pageView === 'delete'}
+	Name: {currentProduct.name}<br />
+	Price: {currentProduct.price}<br />
+	Rating: {currentProduct.rating}<br />
+	Description:{currentProduct.description}<br />
+	Tags: {currentProduct.tags}<br />
+	Options: {currentProduct.options}<br />
+	{message}<br />
+	<button on:click={deleteProduct_submit}>confirm delete</button>
 {/if}
 <br />
 <button
@@ -180,7 +198,7 @@
 >
 <br /> <br />
 
-!!!does not update automatically, need to reload page to see changes  in list <br />
+!!!does not update automatically, need to reload page to see changes in list <br />
 {#each product_ids as _id}
 	<button on:click={() => selectProduct(_id)}>
 		<Product {_id} type="basic" />

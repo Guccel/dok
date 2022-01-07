@@ -1,7 +1,7 @@
 import * as cookie from 'cookie';
 import axios, { AxiosResponse } from 'axios';
 import type { Handle, GetSession } from '@sveltejs/kit';
-import type { UserData_Type } from '../global';
+import type { UserSessionData_Type } from '../global';
 import type { ServerRequest } from '@sveltejs/kit/types/hooks';
 
 async function verifySession(session_id: string): Promise<boolean> {
@@ -15,7 +15,7 @@ async function verifySession(session_id: string): Promise<boolean> {
 	return response.data;
 }
 
-async function getSessionData(session_id: string): Promise<UserData_Type> {
+async function getSessionData(session_id: string): Promise<UserSessionData_Type> {
 	const response: AxiosResponse = await axios({
 		method: 'POST',
 		url: 'http://localhost:3000/session/get-data',
@@ -37,7 +37,7 @@ export const handle: Handle = async ({ request, resolve }) => {
 	const session_id: string = cookies.session_id || null;
 
 	const authenticated: boolean = session_id ? await verifySession(cookies.session_id) : false;
-	const data: UserData_Type = authenticated ? await getSessionData(session_id) : { type: 'unauthenticated' };
+	const data: UserSessionData_Type = authenticated ? await getSessionData(session_id) : { type: 'unauthenticated' };
 
 	request.locals.user = {
 		authenticated,
