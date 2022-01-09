@@ -8,3 +8,6 @@ frontend-ts/.svelte-kit
 */package-lock.json
 */yarn.lock
 */.env
+
+/backend-old
+/frontend-old
