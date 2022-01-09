@@ -1,31 +1,32 @@
 {
-  "name": "dok_backend",
+  "name": "backend-ts",
   "version": "1.0.0",
-  "description": "Backend for dok",
+  "description": "",
   "main": "index.js",
   "scripts": {
-    "dev": "nodemon index.js"
+    "dev": "nodemon index.ts"
   },
+  "keywords": [],
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "@paypal/paypal-js": "^4.2.1",
-    "axios": "^0.24.0",
-    "bcryptjs": "^2.4.3",
-    "body-parser": "^1.19.0",
     "cors": "^2.8.5",
-    "express": "^4.17.1",
-    "express-session": "^1.17.2",
-    "mongodb": "^4.1.4",
-    "mongoose": "^6.1.2",
+    "dotenv": "^10.0.0",
+    "express": "4.17.1",
+    "mongoose": "^5.13.8",
     "morgan": "^1.10.0",
-    "node-uuid": "^1.4.8",
-    "paypal-rest-sdk": "^1.8.1",
-    "uuid": "^8.3.2",
-    "uuid-mongodb": "^2.4.5"
+    "uuid": "^8.3.2"
   },
   "devDependencies": {
-    "dotenv": "^10.0.0",
-    "nodemon": "^2.0.14"
+    "@types/cors": "^2.8.12",
+    "@types/express": "^4.17.13",
+    "@types/mongoose": "^5.11.97",
+    "@types/morgan": "^1.9.3",
+    "@types/node": "^17.0.5",
+    "@types/uuid": "^8.3.3",
+    "nodemon": "^2.0.15",
+    "processenv": "^3.0.9",
+    "ts-node": "^10.4.0",
+    "typescript": "^4.5.4"
   }
 }
