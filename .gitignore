@@ -1,13 +1,10 @@
-frontend/.svelte-kit
-frontend-ts/.svelte-kit
-
-
-.DS_Store
-
+*/.DS_Store
+*/.env
+*/.svelte-kit
+*/dist
 */node_modules
 */package-lock.json
 */yarn.lock
-*/.env
 
 /backend-old
 /frontend-old
