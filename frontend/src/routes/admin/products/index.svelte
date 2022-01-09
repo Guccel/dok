@@ -23,14 +23,14 @@
 
 	export let product_ids: Array<string>;
 
-	// this doesnt actually do anything at the moment but isnt a neccessity for now
 	async function updateProduct_ids() {
-		// const response = await axios({
-		// 	method: 'POST',
-		// 	url: 'http://localhost:3000/product',
-		// 	headers: { 'Content-Type': 'application/json' },
-		// 	data: {}
-		// });
+		const response = await axios({
+			method: 'POST',
+			url: 'http://localhost:3000/product',
+			headers: { 'Content-Type': 'application/json' },
+			data: {}
+		});
+		product_ids = response.data._ids;
 	}
 
 	let pageView: 'none' | 'view' | 'edit' | 'new' | 'delete' = 'none';
@@ -45,9 +45,10 @@
 			method: 'POST',
 			url: `http://localhost:3000/product/get/${selectedProduct_id}`,
 			headers: { 'Content-Type': 'application/json' },
-			data: { getInfo: 'all' }
+			data: { method: 'all' }
 		});
 		currentProduct = response.data;
+
 		message = '';
 		pageView = 'view';
 	}
@@ -198,10 +199,11 @@
 >
 <br /> <br />
 
-!!!does not update automatically, need to reload page to see changes in list <br />
-{#each product_ids as _id}
-	<button on:click={() => selectProduct(_id)}>
-		<Product {_id} type="basic" />
-	</button>
-	<br />
-{/each}
+{#key product_ids}
+	{#each product_ids as _id}
+		<button on:click={() => selectProduct(_id)}>
+			<Product {_id} type="basic" />
+		</button>
+		<br />
+	{/each}
+{/key}
