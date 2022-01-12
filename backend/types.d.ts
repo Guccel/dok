@@ -19,3 +19,36 @@ export interface Type_UserRegisterBody {
   type: 'user' | 'admin';
   password: string;
 }
+
+export namespace T_Routes {
+  //## /user
+  namespace user {
+    //## POST
+    interface POST_req {
+      method: 'all' | 'user' | 'admin';
+      // filter?: null;
+    }
+    interface POST_res {
+      length: number;
+      _ids: string[];
+    }
+    //## /user/get/:_id
+    namespace get {
+      interface POST_req {
+        method: 'basic' | 'all';
+      }
+      interface POST_res {
+        [key: string]: any; // dunno how to fill these types yet
+      }
+    }
+    //## /user/patch/:_id
+    namespace patch {
+      interface POST_req {
+        username?: string;
+        email?: string;
+        type?: 'user' | 'admin';
+      }
+      // POST_res null
+    }
+  }
+}
