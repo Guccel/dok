@@ -13,7 +13,6 @@
 	<a href="/about">About</a>
 	<a href="/products">Products</a>
 	<a href="/user">Profile</a>
-	<a href="/user/login">Sign up</a>
 	{#if $session.user.data.type == 'admin'}
 		<a href="/admin">admin</a>
 	{/if}

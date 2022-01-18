@@ -10,7 +10,7 @@ import env from './environment.config';
 const app: express.Application = express();
 
 //## mongoose
-mongoose.connect(env.MONGODB_URI, { useNewUrlParser: true });
+mongoose.connect(env.MONGODB_URI, { useUnifiedTopology: true, useNewUrlParser: true });
 
 //# middleware
 app.use(cors());
