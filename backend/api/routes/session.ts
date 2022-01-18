@@ -1,3 +1,7 @@
+/**
+ * These routes will handle all session manipulation
+ */
+
 //# imports
 import { Router } from 'express';
 import Session from '../models/session';
@@ -10,7 +14,14 @@ import { v4 as uuidv4 } from 'uuid';
 const router = Router();
 export default router;
 
-//# verify session_id
+//# routes
+
+//## POST /session/verify
+/**
+ * verifies if session token is valid
+ *
+ * 
+ */
 router.post('/verify', async (req, res) => {
   const body: {
     session_id: string;
