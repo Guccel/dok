@@ -7,6 +7,9 @@ import { Router } from 'express';
 import { scryptSync, randomBytes } from 'crypto';
 import User from '../models/user';
 import { T_Routes } from 'types';
+import Session from '../models/session';
+import { v4 as uuidv4 } from 'uuid';
+import { login } from '../helpers/user';
 
 //# exports
 const router = Router();
@@ -19,7 +22,7 @@ export default router;
  * get list of user _ids with filter
  *
  * 200: success
- * 400: filter is wrong !!NEEDS IMPLEMENTATION
+ * !!400: filter is wrong !!NEEDS IMPLEMENTATION
  */
 router.post('/', async (req, res) => {
   const body: T_Routes.user.POST_req = req.body;
@@ -62,7 +65,7 @@ router.post('/get/:_id', async (req, res) => {
 
 //## PATCH /user/patch/:_id
 // !!NEEDS TO BE REDONE
-//!!-will not throw err if field is not used, thus removing the data from user object
+// !!-will not throw err if field is not used, thus removing the data from user object
 /**
  * edits user with given _id
  *
@@ -100,7 +103,7 @@ router.post('/register', async (req, res) => {
 
   const doesUsernameExist: boolean = (await User.findOne({ username: body.username })) ? true : false; // check to see if the username is taken
   const doesEmailExist: boolean = (await User.findOne({ email: body.email })) ? true : false; // check to see if the email is already registered
-  if (doesUsernameExist || doesEmailExist) return res.status(409).json(); // check if username or password registered and send res if true
+  if (doesUsernameExist || doesEmailExist) return res.status(409).json(); // check if username or password registered and return if true
 
   // encrypt password
   const salt = randomBytes(16).toString('hex');
@@ -115,4 +118,29 @@ router.post('/register', async (req, res) => {
   }).save();
 
   return res.status(201).json();
+});
+
+//## POST /user/login
+/**
+ * handles user login
+ *
+ * 201: logged in successfully
+ * 231: user exists but password incorrect
+ * 404: username not found
+ */
+router.post('/login', async (req, res) => {
+  const body: T_Routes.user.login.POST_req = req.body;
+
+  const user = await User.findOne({ username: body.username }).select('email type password salt'); // gets user data
+
+  if (!user) return res.status(404).json(); // returns if username does not exist
+
+  if (user.password !== scryptSync(body.password, user.salt, 64).toString('hex')) return res.status(260).json(); // returns if encrypted body password does not match encrypted user password
+
+  //TODO implement better handling for if user already has session
+  Session.findOneAndDelete({ email: user.email });
+
+  const session_id = login(user); // login and create _id
+
+  return res.status(201).json({ _id: session_id });
 });

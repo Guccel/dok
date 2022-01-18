@@ -50,5 +50,31 @@ export namespace T_Routes {
       }
       // POST_res null
     }
+    namespace login {
+      interface POST_req {
+        username: string;
+        password: string;
+      }
+      interface POST_res {
+        session_id: string;
+      }
+    }
+  }
+  //## /session
+  namespace session {
+    namespace verify {
+      interface POST_req {
+        session_id: string;
+      }
+      // POST_res null
+    }
+    namespace getData {
+      interface POST_req {
+        session_id: string;
+      }
+      interface POST_res {
+        [key: string]: any;
+      }
+    }
   }
 }

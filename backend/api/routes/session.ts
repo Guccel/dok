@@ -1,14 +1,11 @@
 /**
- * These routes will handle all session manipulation
+ * These routes will handle all session requests
  */
 
 //# imports
+import { T_Routes } from 'types';
 import { Router } from 'express';
-import Session from '../models/session';
-import User from '../models/user';
 import { verify, getData } from '../helpers/session';
-import { scryptSync } from 'crypto';
-import { v4 as uuidv4 } from 'uuid';
 
 //# exports
 const router = Router();
@@ -18,70 +15,34 @@ export default router;
 
 //## POST /session/verify
 /**
- * verifies if session token is valid
+ * checks if session currently exists
  *
- * 
+ * 230: session exists
+ * 231: session does not exist
+ * 400: bad req
  */
 router.post('/verify', async (req, res) => {
-  const body: {
-    session_id: string;
-  } = req.body;
+  const body: T_Routes.session.verify.POST_req = req.body;
 
-  if (!body) return res.status(404);
-  const out = await verify(body.session_id);
-  return res.status(200).json(out);
+  if (!body) return res.status(40); // return if bad request
+  if (await verify(body.session_id)) return res.status(230).json();
+  // returns if session exists
+  else return res.status(231).json(); // returns if session does not exist
 });
 
-//# get session data
+//## POST /session/get-data
+/**
+ * gets data for a specific session id
+ *
+ * 200: success
+ * 400: bad req
+ * 404: session does not exist
+ */
 router.post('/get-data', async (req, res) => {
-  const body: {
-    session_id: string;
-  } = req.body;
+  const body: T_Routes.session.getData.POST_req = req.body;
 
-  if (!body) return res.status(404);
-  const out = await getData(body.session_id);
-  return res.status(200).json(out);
-});
-
-//# login user
-router.post('/login', async (req, res) => {
-  const body: {
-    username: string;
-    password: string;
-  } = req.body;
-
-  // Check to see if the username exists
-  const user = await User.findOne({ username: body.username });
-  if (!user) {
-    return res.status(404).json({
-      msg: 'username not found',
-    });
-  }
-
-  // Check to see if password is correct
-  if (user.password !== scryptSync(body.password, user.salt, 64).toString('hex')) {
-    return res.status(260).json({
-      msg: 'password incorrect',
-    });
-  }
-
-  //TODO implement better handling for if user already has session
-  Session.findOneAndDelete({ email: user.email });
-
-  const _id = uuidv4();
-  new Session({
-    _id,
-    data: {
-      email: user.email,
-      type: user.type,
-    },
-  }).save();
-
-  return res.status(201).json({
-    _id,
-    data: {
-      email: user.email,
-      type: user.type,
-    },
-  });
+  if (!body) return res.status(400); // return if bad request
+  if (!(await verify(body.session_id))) return res.status(404).json(); // returns if session does not exist
+  const response: T_Routes.session.getData.POST_res = await getData(body.session_id); // fetches session data
+  return res.status(200).json(response); // returns session data
 });
