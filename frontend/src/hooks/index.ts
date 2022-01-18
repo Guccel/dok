@@ -1,29 +1,8 @@
 import * as cookie from 'cookie';
-import axios, { AxiosResponse } from 'axios';
 import type { Handle, GetSession } from '@sveltejs/kit';
-import type { UserSessionData_Type } from '../global';
+import type { UserSessionData } from 'types';
 import type { ServerRequest } from '@sveltejs/kit/types/hooks';
-
-async function verifySession(session_id: string): Promise<boolean> {
-	const response: AxiosResponse = await axios({
-		method: 'POST',
-		url: 'http://localhost:3000/session/verify',
-		headers: { 'Content-Type': 'application/json' },
-
-		data: { session_id }
-	});
-	return response.data;
-}
-
-async function getSessionData(session_id: string): Promise<UserSessionData_Type> {
-	const response: AxiosResponse = await axios({
-		method: 'POST',
-		url: 'http://localhost:3000/session/get-data',
-		headers: { 'Content-Type': 'application/json' },
-		data: { session_id }
-	});
-	return response.data;
-}
+import { getSessionData, verifySession } from './helpers';
 
 export const handle: Handle = async ({ request, resolve }) => {
 	//# user authentication
@@ -36,11 +15,9 @@ export const handle: Handle = async ({ request, resolve }) => {
 	// initialise variables
 	const session_id: string = cookies.session_id || null;
 
-	const authenticated: boolean = session_id ? await verifySession(cookies.session_id) : false;
-	const data: UserSessionData_Type = authenticated ? await getSessionData(session_id) : { type: 'unauthenticated' };
+	const data: UserSessionData = await getSessionData(session_id);
 
 	request.locals.user = {
-		authenticated,
 		session_id,
 		data
 	};
@@ -48,7 +25,7 @@ export const handle: Handle = async ({ request, resolve }) => {
 	//# rerouting
 	// test if path starts with "/admin"
 	if (RegExp(/^(\/admin\/?)/).exec(request.url.toString())) {
-		if (!authenticated && !(data.type == 'admin')) return { status: 300, headers: { location: '/' } };
+		if (!(data.type == 'admin')) return { status: 300, headers: { location: '/' } };
 	}
 
 	//# create and return response

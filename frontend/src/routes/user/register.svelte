@@ -42,6 +42,7 @@
 		});
 
 		// tests if password is strong enough
+		//TODO make better
 		const isPasswordGood = (value: string) => {
 			if (value.length > 0) {
 				return true;
@@ -120,4 +121,3 @@
 		passwords do not match
 	{/if}
 </form>
-

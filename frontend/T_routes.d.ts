@@ -39,10 +39,17 @@ export namespace user {
 }
 //## /session
 export namespace session {
-  namespace getData {
+  namespace verify {
+    interface POST_req {
+      session_id: string;
+    }
     // POST_res null
-
-    interface GET_res {
+  }
+  namespace getData {
+    interface POST_req {
+      session_id: string;
+    }
+    interface POST_res {
       [key: string]: any;
     }
   }

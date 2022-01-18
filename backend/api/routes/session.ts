@@ -14,36 +14,36 @@ export default router;
 
 //# routes
 
-//## POST /session/verify
+//## GET /session/verify/:session_id
 /**
  * checks if session currently exists
  *
- * 230: session exists
- * 231: session does not exist
- * 400: bad req
+ * 200: session exists
+ * 400: bad slug
+ * 404: session does not exist
  */
-router.post('/verify', async (req, res) => {
-  const body: session.verify.POST_req = req.body;
+router.get('/verify/:session_id', async (req, res) => {
+  const session_id: string = req.params.session_id;
 
-  if (!body) return res.status(40); // return if bad request
-  if (await verify(body.session_id)) return res.status(230).json();
+  if (!session_id) return res.status(400); // return if bad request
+  if (await verify(session_id)) return res.status(200).json();
   // returns if session exists
-  else return res.status(231).json(); // returns if session does not exist
+  else return res.status(404).json(); // returns if session does not exist
 });
 
-//## POST /session/get-data
+//## GET /session/get-data/:session_id
 /**
  * gets data for a specific session id
  *
  * 200: success
- * 400: bad req
+ * 400: bad slug
  * 404: session does not exist
  */
-router.post('/get-data', async (req, res) => {
-  const body: session.getData.POST_req = req.body;
+router.get('/get-data/:session_id', async (req, res) => {
+  const session_id: string = req.params.session_id;
 
-  if (!body) return res.status(400); // return if bad request
-  if (!(await verify(body.session_id))) return res.status(404).json(); // returns if session does not exist
-  const response: session.getData.POST_res = await getData(body.session_id); // fetches session data
+  if (!session_id) return res.status(400); // return if bad request
+  if (!(await verify(session_id))) return res.status(404).json(); // returns if session does not exist
+  const response: session.getData.GET_res = await getData(session_id); // fetches session data
   return res.status(200).json(response); // returns session data
 });
