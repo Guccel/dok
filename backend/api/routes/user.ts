@@ -148,3 +148,13 @@ router.post('/login', async (req, res) => {
 
   return res.status(201).json({ _id: session_id });
 });
+
+//## GET /user/login-with-id/:_id
+/**
+ * logs in user using session_id
+ *
+ */
+router.get('/login-with-id/:_id', async (req, res)=> {
+  const _id: string = req.params._id;
+
+})
