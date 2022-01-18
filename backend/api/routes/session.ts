@@ -1,9 +1,10 @@
 /**
  * These routes will handle all session requests
+ * DOES NOT HANDLE SESSION CREATION -see POST /user/login
  */
 
 //# imports
-import { T_Routes } from 'types';
+import { session } from 'T_routes';
 import { Router } from 'express';
 import { verify, getData } from '../helpers/session';
 
@@ -22,7 +23,7 @@ export default router;
  * 400: bad req
  */
 router.post('/verify', async (req, res) => {
-  const body: T_Routes.session.verify.POST_req = req.body;
+  const body: session.verify.POST_req = req.body;
 
   if (!body) return res.status(40); // return if bad request
   if (await verify(body.session_id)) return res.status(230).json();
@@ -39,10 +40,10 @@ router.post('/verify', async (req, res) => {
  * 404: session does not exist
  */
 router.post('/get-data', async (req, res) => {
-  const body: T_Routes.session.getData.POST_req = req.body;
+  const body: session.getData.POST_req = req.body;
 
   if (!body) return res.status(400); // return if bad request
   if (!(await verify(body.session_id))) return res.status(404).json(); // returns if session does not exist
-  const response: T_Routes.session.getData.POST_res = await getData(body.session_id); // fetches session data
+  const response: session.getData.POST_res = await getData(body.session_id); // fetches session data
   return res.status(200).json(response); // returns session data
 });

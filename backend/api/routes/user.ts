@@ -6,7 +6,7 @@
 import { Router } from 'express';
 import { scryptSync, randomBytes } from 'crypto';
 import User from '../models/user';
-import { T_Routes } from 'types';
+import { user } from 'T_routes';
 import Session from '../models/session';
 import { v4 as uuidv4 } from 'uuid';
 import { login } from '../helpers/user';
@@ -25,7 +25,7 @@ export default router;
  * !!400: filter is wrong !!NEEDS IMPLEMENTATION
  */
 router.post('/', async (req, res) => {
-  const body: T_Routes.user.POST_req = req.body;
+  const body: user.POST_req = req.body;
 
   let users = [];
 
@@ -33,7 +33,7 @@ router.post('/', async (req, res) => {
   else if (body.method === 'user') users = await User.find({ type: 'user' });
   else if (body.method === 'admin') users = await User.find({ type: 'admin' });
 
-  const response: T_Routes.user.POST_res = {
+  const response: user.POST_res = {
     length: users.length,
     _ids: users,
   };
@@ -51,11 +51,11 @@ router.post('/', async (req, res) => {
  */
 router.post('/get/:_id', async (req, res) => {
   const _id: string = req.params._id;
-  const body: T_Routes.user.get.POST_req = req.body;
+  const body: user.get.POST_req = req.body;
 
   if (!['all', 'basic'].includes(body.method)) return res.status(400).json(); // returns if bad req
 
-  let response: T_Routes.user.get.POST_res = {};
+  let response: user.get.POST_res = {};
   if (body.method === 'basic') response = await User.findById(_id).select('_id username email type');
   else if (body.method === 'all') response = await User.findById(_id);
 
@@ -75,7 +75,7 @@ router.post('/get/:_id', async (req, res) => {
  */
 router.patch('/patch/:_id', async (req, res) => {
   const _id: string = req.params._id;
-  const body: T_Routes.user.patch.POST_req = req.body;
+  const body: user.patch.POST_req = req.body;
   await User.findOneAndUpdate(
     { _id },
     {
@@ -129,7 +129,7 @@ router.post('/register', async (req, res) => {
  * 404: username not found
  */
 router.post('/login', async (req, res) => {
-  const body: T_Routes.user.login.POST_req = req.body;
+  const body: user.login.POST_req = req.body;
 
   const user = await User.findOne({ username: body.username }).select('email type password salt'); // gets user data
 
