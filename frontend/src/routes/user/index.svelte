@@ -13,7 +13,6 @@
 <script lang="ts">
 	import type { User_Type } from 'src/global';
 
-
 	import { session } from '$app/stores';
 
 	import Cookies from 'js-cookie';

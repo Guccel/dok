@@ -115,10 +115,9 @@
 		{/if}
 	{/if}
 	{#if doPasswordsMatch}
-		<button type="submit">register</button>
+		<button type="submit">Submit</button>
 	{:else}
 		passwords do not match
 	{/if}
 </form>
 
-<button on:click={() => goto('./login')}>login</button>

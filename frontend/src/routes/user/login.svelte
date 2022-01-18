@@ -58,7 +58,5 @@
 	<input id="password" name="password" type="password" />
 	<br />
 
-	<button type="submit">Login</button>
+	<button type="submit">Submit</button>
 </form>
-
-<button on:click={() => goto('./register')}>register</button>
