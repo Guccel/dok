@@ -10,6 +10,7 @@ import { user } from 'T_routes';
 import Session from '../models/session';
 import { v4 as uuidv4 } from 'uuid';
 import { login } from '../helpers/user';
+import { sendRegisterMail } from '../helpers/mail'
 
 //# exports
 const router = Router();
@@ -116,6 +117,9 @@ router.post('/register', async (req, res) => {
     password: password_hashed,
     salt,
   }).save();
+
+  // Send verification email
+  sendRegisterMail(body.email);
 
   return res.status(201).json();
 });
