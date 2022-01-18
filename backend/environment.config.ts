@@ -4,4 +4,5 @@ export default {
   BASE_URL: process.env.BASE_URL,
   IS_PRODUCTION: process.env.IS_PRODUCTION,
   MONGODB_URI: process.env.MONGODB_URI || '',
+  EMAIL: process.env.EMAIL,
 };
