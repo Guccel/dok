@@ -1,7 +1,7 @@
 import Session from '../models/session';
 
 export async function verify(session_id: string) {
-  if (await Session.findById(session_id)) {
+  if (await Session.exists({_id: session_id})) {
     return true;
   } else {
     return false;
