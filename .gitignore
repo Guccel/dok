@@ -6,6 +6,8 @@
 */package-lock.json
 */yarn.lock
 
+docs/.obsidian
+
 /backend-old
 /frontend-old
 
