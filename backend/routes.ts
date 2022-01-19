@@ -12,3 +12,6 @@ routes.use('/session', session_routes);
 
 import user_routes from './api/routes/user';
 routes.use('/user', user_routes);
+
+import email_routes from './api/routes/email';
+routes.use('/email', email_routes);
