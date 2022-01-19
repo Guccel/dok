@@ -1,6 +1,6 @@
 <script context="module">
 	export async function load({ session }) {
-		if (session.user.authenticated) {
+		if (session.user.data.type != 'unauthenticated') {
 			return {
 				status: 300,
 				redirect: '/user'
