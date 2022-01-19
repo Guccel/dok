@@ -13,13 +13,16 @@
 <script lang="ts">
 	import { goto } from '$app/navigation';
 	import { session } from '$app/stores';
+	import { loginWithId } from '$lib/helpers/login';
 	import axios, { AxiosResponse } from 'axios';
 	import Cookies from 'js-cookie';
 
 	let hasSubmit = false;
-	let validation = { userCredentials: false, password: false };
 	let password;
 	let password_confirm;
+
+	let isCredentialsFree = true;
+	let isStrongPassword = true;
 	$: doPasswordsMatch = password == password_confirm;
 
 	// tests if username and email are available, then creates user if true
@@ -28,63 +31,46 @@
 		const username: string = form_data.get('username').toString();
 		const email: string = form_data.get('email').toString();
 		const password: string = form_data.get('password').toString();
-		const password_confirm: string = form_data.get('password_confirm').toString();
 
-		const response: AxiosResponse = await axios({
-			method: 'POST',
-			url: 'http://localhost:3000/user/register',
-			headers: { 'Content-Type': 'application/json' },
-			data: {
-				username,
-				email,
-				password
-			}
-		});
-
+		//TODO make less shitty
 		// tests if password is strong enough
-		//TODO make better
-		const isPasswordGood = (value: string) => {
-			if (value.length > 0) {
-				return true;
-			} else return false;
-		};
-
-		// validation error or success info for rendering
-		validation = {
-			userCredentials: response.status === 201 ? true : false,
-			password: isPasswordGood(password)
-		};
-
-		if (response.status === 260) {
+		if (!(password.length > 0)) {
+			hasSubmit = true;
+			isStrongPassword = false;
 		}
 
-		if (validation.userCredentials && validation.password) {
-			const response = await axios({
+		if (isStrongPassword) {
+			const response_register: AxiosResponse = await axios({
 				method: 'POST',
-				url: 'http://localhost:3000/session/login',
+				url: 'http://localhost:3000/user/register',
 				headers: { 'Content-Type': 'application/json' },
 				data: {
 					username,
+					email,
 					password
 				}
 			});
-			if (response.status === 201) {
-				Cookies.set('session_id', response.data._id, {
-					sameSite: 'lax'
-				});
-
-				// Update session with current user data
-				session.update((store) => ({
-					...store,
-					user: {
-						authenticated: true,
-						session_id: response.data._id,
-						data: response.data.data
-					}
-				}));
+			if (response_register.status === 409) {
+				hasSubmit = true;
+				isCredentialsFree = false;
 			}
-			return goto('/user');
-			//TODO implement login on submit
+
+			if (response_register.status === 201) {
+				const response_login = await axios({
+					method: 'POST',
+					url: 'http://localhost:3000/session/login',
+					headers: { 'Content-Type': 'application/json' },
+					data: {
+						username,
+						password
+					}
+				});
+				if (response_login.status === 201) {
+					loginWithId(response_login.data._id);
+				}
+				return goto('/user');
+				//TODO implement login on submit
+			}
 		}
 
 		hasSubmit = true;
@@ -106,11 +92,11 @@
 	<br />
 	{#if hasSubmit}
 		submited
-		{#if !validation.userCredentials}
+		{#if !isCredentialsFree}
 			username or password already taken
 			<br />
 		{/if}
-		{#if !validation.password}
+		{#if !isStrongPassword}
 			password weak
 			<br />
 		{/if}

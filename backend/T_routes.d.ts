@@ -27,6 +27,13 @@ export namespace user {
     }
     // POST_res null
   }
+  namespace register {
+    interface POST_req {
+      username: string;
+      email: string;
+      password: string;
+    }
+  }
   namespace login {
     interface POST_req {
       username: string;

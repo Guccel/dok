@@ -34,6 +34,7 @@
 				password
 			}
 		});
+		//TODO this is shit code
 		if (response.status === 201) {
 			loginWithId(response.data._id);
 		} else if (response.status === 231) {
@@ -53,10 +54,10 @@
 	<label for="password">Password</label>
 	<input id="password" name="password" type="password" />
 	<br />
-	{#if isPasswordCorrect}
+	{#if !isPasswordCorrect}
 		password inccorect <br />
 	{/if}
-	{#if isUserExist}
+	{#if !isUserExist}
 		username does not exist <br />
 	{/if}
 	<button type="submit">Submit</button>
