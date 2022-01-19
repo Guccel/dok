@@ -1,6 +1,6 @@
 <script context="module">
 	export async function load({ session }) {
-		if (!session.user.authenticated) {
+		if (session.user.data.type == 'unauthenticated') {
 			return {
 				status: 300,
 				redirect: '/user/login'
@@ -11,8 +11,6 @@
 </script>
 
 <script lang="ts">
-	import type { User_Type } from 'src/global';
-
 	import { session } from '$app/stores';
 
 	import Cookies from 'js-cookie';
@@ -20,14 +18,13 @@
 	const logout = () => {
 		Cookies.remove('session_id');
 
-		const user: User_Type = {
+		const user = {
 			authenticated: false,
 			session_id: null,
 			data: { type: 'unauthenticated' }
 		};
 
 		session.update((store) => ({ ...store, user }));
-
 	};
 </script>
 

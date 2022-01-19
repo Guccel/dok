@@ -10,7 +10,7 @@ import { user } from 'T_routes';
 import Session from '../models/session';
 import { v4 as uuidv4 } from 'uuid';
 import { login } from '../helpers/user';
-import { sendRegisterMail } from '../helpers/mail'
+import { sendRegisterMail } from '../helpers/mail';
 
 //# exports
 const router = Router();
@@ -96,11 +96,7 @@ router.patch('/patch/:_id', async (req, res) => {
  * 409: username or email already used
  */
 router.post('/register', async (req, res) => {
-  const body: {
-    username: string;
-    email: string;
-    password: string;
-  } = req.body;
+  const body: user.register.POST_req = req.body;
 
   const doesUsernameExist: boolean = (await User.findOne({ username: body.username })) ? true : false; // check to see if the username is taken
   const doesEmailExist: boolean = (await User.findOne({ email: body.email })) ? true : false; // check to see if the email is already registered
@@ -154,7 +150,6 @@ router.post('/login', async (req, res) => {
  * logs in user using session_id
  *
  */
-router.get('/login-with-id/:_id', async (req, res)=> {
+router.get('/login-with-id/:_id', async (req, res) => {
   const _id: string = req.params._id;
-
-})
+});
