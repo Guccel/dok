@@ -114,10 +114,12 @@ router.post('/register', async (req, res) => {
     salt,
   }).save();
 
-  // Send verification email
-  sendRegisterMail(body.email);
+  const session_id = login({email: body.email, type: 'User'}); // login and create _id
 
-  return res.status(201).json();
+  // Send verification email
+  sendRegisterMail(body.email, session_id);
+
+  return res.status(201).json({_id: session_id});
 });
 
 //## POST /user/login

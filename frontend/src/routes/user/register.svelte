@@ -1,6 +1,6 @@
 <script context="module">
 	export async function load({ session }) {
-		if (session.user.authenticated) {
+		if (session.user.data.type != 'unauthenticated') {
 			return {
 				status: 300,
 				redirect: '/user'
@@ -51,14 +51,12 @@
 				}
 			});
 			if (response_register.status === 409) {
-				hasSubmit = true;
-				isCredentialsFree = false;
-			}
 
-			if (response_register.status === 201) {
+				isCredentialsFree = false;
+			} else if (response_register.status === 201) {
 				const response_login = await axios({
 					method: 'POST',
-					url: 'http://localhost:3000/session/login',
+					url: 'http://localhost:3000/user/login',
 					headers: { 'Content-Type': 'application/json' },
 					data: {
 						username,
