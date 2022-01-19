@@ -1,7 +1,6 @@
 <script lang="ts">
 	import axios from 'axios';
 
-	import type { User_Type } from 'src/global';
 	import { onMount } from 'svelte';
 
 	export let users = [];
@@ -21,9 +20,11 @@
 			method: 'POST',
 			url: 'http://localhost:3000/user',
 			headers: { 'Content-Type': 'application/json' },
-			data: { method: 'all' }
-		}).then((res) => {users = res.data._ids; console.log(users)})
-	})
+			data: { filter: 'all' }
+		}).then((res) => {
+			users = res.data._ids;
+		});
+	});
 </script>
 
 <table>
@@ -33,7 +34,7 @@
 		<td>type</td>
 	</tr>
 	{#await users}
-		<p> Loading user data </p>
+		<p>Loading user data</p>
 	{:then data}
 		{#each data as user, i}
 			<tr>

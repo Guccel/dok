@@ -2,7 +2,7 @@ import * as cookie from 'cookie';
 import type { Handle, GetSession } from '@sveltejs/kit';
 import type { UserSessionData } from 'types';
 import type { ServerRequest } from '@sveltejs/kit/types/hooks';
-import { getSessionData, verifySession } from './helpers';
+import { getSessionData } from './helpers';
 
 export const handle: Handle = async ({ request, resolve }) => {
 	//# user authentication

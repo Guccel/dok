@@ -1,6 +1,7 @@
 import type { UserSessionData } from 'types';
 import axios, { AxiosResponse } from 'axios';
 
+// possibly unneeded
 export async function verifySession(session_id: string): Promise<boolean> {
 	const response: AxiosResponse = await axios({
 		method: 'GET',

@@ -19,22 +19,22 @@ export default router;
 //# routes
 
 //## POST /user/
-/**
- * get list of user _ids with filter
- *
- * 200: success
- * !!400: filter is wrong !!NEEDS IMPLEMENTATION
- */
 router.post('/', async (req, res) => {
-  const body: user.POST_req = req.body;
+  const body: {
+    filter: 'all' | 'user' | 'admin';
+    // filter?: null;
+  } = req.body;
 
   let users = [];
 
-  if (body.method === 'all') users = await User.find();
-  else if (body.method === 'user') users = await User.find({ type: 'user' });
-  else if (body.method === 'admin') users = await User.find({ type: 'admin' });
+  if (body.filter === 'all') users = await User.find();
+  else if (body.filter === 'user') users = await User.find({ type: 'user' });
+  else if (body.filter === 'admin') users = await User.find({ type: 'admin' });
 
-  const response: user.POST_res = {
+  const response: {
+    length: number;
+    _ids: string[];
+  } = {
     length: users.length,
     _ids: users,
   };
@@ -43,22 +43,19 @@ router.post('/', async (req, res) => {
 });
 
 //## POST /user/get/:_id
-/**
- * get more info on a specific user using an _id
- *
- * 200: success
- * 400: bad req
- * 404: _id does not exist
- */
 router.post('/get/:_id', async (req, res) => {
   const _id: string = req.params._id;
-  const body: user.get.POST_req = req.body;
+  const body: {
+    filter: 'basic' | 'all';
+  } = req.body;
 
-  if (!['all', 'basic'].includes(body.method)) return res.status(400).json(); // returns if bad req
+  if (!['all', 'basic'].includes(body.filter)) return res.status(400).json(); // returns if bad req
 
-  let response: user.get.POST_res = {};
-  if (body.method === 'basic') response = await User.findById(_id).select('_id username email type');
-  else if (body.method === 'all') response = await User.findById(_id);
+  let response: {
+    [key: string]: any; // dunno how to fill these types yet
+  } = {};
+  if (body.filter === 'basic') response = await User.findById(_id).select('_id username email type');
+  else if (body.filter === 'all') response = await User.findById(_id);
 
   if (response === {}) return res.status(404).json();
   return res.status(200).json(response);
@@ -67,16 +64,13 @@ router.post('/get/:_id', async (req, res) => {
 //## PATCH /user/patch/:_id
 // !!NEEDS TO BE REDONE
 // !!-will not throw err if field is not used, thus removing the data from user object
-/**
- * edits user with given _id
- *
- * 200: success
- * 400: invalid edit query !!NEEDS IMPLEMENTATION
- * 404: _id does not exist !!NEEDS IMPLEMENTATION
- */
 router.patch('/patch/:_id', async (req, res) => {
   const _id: string = req.params._id;
-  const body: user.patch.POST_req = req.body;
+  const body: {
+    username?: string;
+    email?: string;
+    type?: 'user' | 'admin';
+  } = req.body;
   await User.findOneAndUpdate(
     { _id },
     {
@@ -89,14 +83,12 @@ router.patch('/patch/:_id', async (req, res) => {
 });
 
 //## POST /user/register
-/**
- * creates a user with given data
- *
- * 201: created successfully
- * 409: username or email already used
- */
 router.post('/register', async (req, res) => {
-  const body: user.register.POST_req = req.body;
+  const body: {
+    username: string;
+    email: string;
+    password: string;
+  } = req.body;
 
   const doesUsernameExist: boolean = (await User.findOne({ username: body.username })) ? true : false; // check to see if the username is taken
   const doesEmailExist: boolean = (await User.findOne({ email: body.email })) ? true : false; // check to see if the email is already registered
@@ -114,24 +106,20 @@ router.post('/register', async (req, res) => {
     salt,
   }).save();
 
-  const session_id = login({email: body.email, type: 'User'}); // login and create _id
+  const session_id = login({ email: body.email, type: 'User' }); // login and create _id
 
   // Send verification email
   sendRegisterMail(body.email, session_id);
 
-  return res.status(201).json({_id: session_id});
+  return res.status(201).json({ _id: session_id });
 });
 
 //## POST /user/login
-/**
- * handles user login
- *
- * 201: logged in successfully
- * 231: user exists but password incorrect
- * 404: username not found
- */
 router.post('/login', async (req, res) => {
-  const body: user.login.POST_req = req.body;
+  const body: {
+    username: string;
+    password: string;
+  } = req.body;
 
   const user = await User.findOne({ username: body.username }).select('email type password salt'); // gets user data
 
@@ -142,8 +130,11 @@ router.post('/login', async (req, res) => {
   //TODO implement better handling for if user already has session
   Session.findOneAndDelete({ email: user.email });
 
-  const session_id = login(user); // login and create _id
+  const response: {
+    _id: string;
+  } = {
+    _id: login(user), // login and create _id
+  };
 
-  return res.status(201).json({ _id: session_id });
+  return res.status(201).json(response);
 });
-
