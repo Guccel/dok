@@ -25,9 +25,9 @@ export async function getSessionData(session_id: string): Promise<UserSessionDat
 		if (response.status === 200) return response.data;
 		if (response.status === 404) {
 			console.log('helper.ts: not found');
-			return { type: 'unauthenticated' };
+			return { type: 'unauthenticated', _id: "" };
 		}
-	} else if (session_id === null) return { type: 'unauthenticated' };
+	} else if (session_id === null) return { type: 'unauthenticated', _id: ""};
 	console.log('helper.ts: bad req 2');
-	return { type: 'unauthenticated' };
+	return { type: 'unauthenticated', _id: ""};
 }

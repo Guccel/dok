@@ -22,6 +22,7 @@ export interface UserSession {
 export interface UserSessionData {
   type: 'unauthenticated' | 'user' | 'admin';
   email?: string;
+  _id: string;
 }
 
 export interface ProductAll_Type {

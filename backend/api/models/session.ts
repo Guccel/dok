@@ -8,6 +8,7 @@ const sessionSchema = new Schema(
     data: {
       email: { type: String, required: true },
       type: { type: String, default: 'User' },
+      _id: {type: String, required: true}
     },
   },
   {

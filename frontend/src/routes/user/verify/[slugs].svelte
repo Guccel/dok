@@ -1,23 +1,21 @@
 <script>
   import { page } from '$app/stores';
-  import axios from "axios"; 
   import {goto} from '$app/navigation'
   import { onMount } from 'svelte';
+  import { getSessionData } from '../../../hooks/helpers'; 
+  import axios from 'axios';
 
-  export let responce = "";
 
   onMount(async () => {
-    await axios({
-      method: "GET",
-      url: `http://localhost:3000/session/verify/${$page.params.slugs}`,
-        headers: { 'Content-Type': 'application/json' },
-    }).then((res) => {
-      if(res.status == 200) {goto("/")}
+    getSessionData($page.params.slugs).then(async (res) => {
+      await axios({
+        method: "GET",
+        url: `http://localhost:3000/email/verify/${res._id}`
+      })
     }).catch((err) => {
-      responce = err
+      if (err) throw err
     })
+
+    goto('/')
   })
-
 </script>
-
-{responce}

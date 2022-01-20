@@ -99,14 +99,16 @@ router.post('/register', async (req, res) => {
   const password_hashed = scryptSync(body.password, salt, 64).toString('hex');
 
   // save new user
-  new User({
+  let newUser = new User({
     username: body.username,
     email: body.email,
     password: password_hashed,
     salt,
-  }).save();
+  })
+  
+  newUser.save();
 
-  const session_id = login({ email: body.email, type: 'User' }); // login and create _id
+  const session_id = login({ email: body.email, type: 'User', _id:newUser._id}); // login and create _id
 
   // Send verification email
   sendRegisterMail(body.email, session_id);
@@ -121,14 +123,14 @@ router.post('/login', async (req, res) => {
     password: string;
   } = req.body;
 
-  const user = await User.findOne({ username: body.username }).select('email type password salt'); // gets user data
+  const user = await User.findOne({ username: body.username }).select('email type password salt _id'); // gets user data
 
   if (!user) return res.status(404).json(); // returns if username does not exist
 
   if (user.password !== scryptSync(body.password, user.salt, 64).toString('hex')) return res.status(260).json(); // returns if encrypted body password does not match encrypted user password
 
   //TODO implement better handling for if user already has session
-  Session.findOneAndDelete({ email: user.email });
+  Session.findOneAndDelete({ email: user.email, _id: user._id});
 
   const response: {
     _id: string;
