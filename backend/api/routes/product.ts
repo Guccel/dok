@@ -53,7 +53,6 @@ router.patch('/patch/:_id', async (req, res) => {
     tags?: [];
     options?: [];
   } = req.body;
-  console.log(body);
 
   await Product.findOneAndUpdate(
     { _id },
@@ -65,7 +64,7 @@ router.patch('/patch/:_id', async (req, res) => {
       options: body.options,
     }
   );
-  return res.status(204).json();
+  return res.status(204);
 });
 
 //# delete product

@@ -79,7 +79,7 @@ router.patch('/patch/:_id', async (req, res) => {
       type: body.type,
     }
   );
-  return res.status(200).json();
+  return res.status(200);
 });
 
 //## POST /user/register
@@ -104,11 +104,11 @@ router.post('/register', async (req, res) => {
     email: body.email,
     password: password_hashed,
     salt,
-  })
-  
+  });
+
   newUser.save();
 
-  const session_id = login({ email: body.email, type: 'User', _id:newUser._id}); // login and create _id
+  const session_id = login({ email: body.email, type: 'User', _id: newUser._id }); // login and create _id
 
   // Send verification email
   sendRegisterMail(body.email, session_id);
@@ -130,7 +130,7 @@ router.post('/login', async (req, res) => {
   if (user.password !== scryptSync(body.password, user.salt, 64).toString('hex')) return res.status(260).json(); // returns if encrypted body password does not match encrypted user password
 
   //TODO implement better handling for if user already has session
-  Session.findOneAndDelete({ email: user.email, _id: user._id});
+  Session.findOneAndDelete({ email: user.email, _id: user._id });
 
   const response: {
     _id: string;

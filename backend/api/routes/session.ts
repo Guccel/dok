@@ -14,14 +14,14 @@ export default router;
 
 //# routes
 
-//## GET /session/verify/:session_id
-router.get('/verify/:session_id', async (req, res) => {
+//## HEAD /session/verify/:session_id
+router.head('/verify/:session_id', async (req, res) => {
   const session_id: string = req.params.session_id;
 
   if (!session_id) return res.status(400); // return if bad request
-  if (await verify(session_id)) return res.status(200).json();
+  if (await verify(session_id)) return res.status(200)
   // returns if session exists
-  else return res.status(404).json(); // returns if session does not exist
+  else return res.status(404) // returns if session does not exist
 });
 
 //## GET /session/get-data/:session_id

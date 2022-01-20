@@ -4,7 +4,7 @@ import axios, { AxiosResponse } from 'axios';
 // possibly unneeded
 export async function verifySession(session_id: string): Promise<boolean> {
 	const response: AxiosResponse = await axios({
-		method: 'GET',
+		method: 'HEAD',
 		url: `http://localhost:3000/session/verify/${session_id}`,
 		headers: { 'Content-Type': 'application/json' }
 	});
@@ -25,9 +25,9 @@ export async function getSessionData(session_id: string): Promise<UserSessionDat
 		if (response.status === 200) return response.data;
 		if (response.status === 404) {
 			console.log('helper.ts: not found');
-			return { type: 'unauthenticated', _id: "" };
+			return { type: 'unauthenticated', _id: '' };
 		}
-	} else if (session_id === null) return { type: 'unauthenticated', _id: ""};
+	} else if (session_id === null) return { type: 'unauthenticated', _id: '' };
 	console.log('helper.ts: bad req 2');
-	return { type: 'unauthenticated', _id: ""};
+	return { type: 'unauthenticated', _id: '' };
 }
