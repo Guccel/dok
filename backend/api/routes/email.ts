@@ -10,7 +10,7 @@ const router = Router();
 export default router;
 
 //# routes
-router.head('/verify/:_id', async (req, res) => {
+router.patch('/verify/:_id', async (req, res) => {
   const user = await User.findOne({ _id: req.params._id }).select('verified'); // gets user data
 
   if (user.verified == false) {
