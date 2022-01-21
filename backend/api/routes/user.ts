@@ -45,6 +45,7 @@ router.post('/', async (req, res) => {
 //## POST /user/get/:_id
 router.post('/get/:_id', async (req, res) => {
   const _id: string = req.params._id;
+
   const body: {
     filter: 'basic' | 'all';
   } = req.body;
@@ -54,8 +55,9 @@ router.post('/get/:_id', async (req, res) => {
   let response: {
     [key: string]: any; // dunno how to fill these types yet
   } = {};
-  if (body.filter === 'basic') response = await User.findById(_id).select('_id username email type');
-  else if (body.filter === 'all') response = await User.findById(_id);
+
+  if (body.filter === 'basic') response = await User.findOne({ _id }).select('_id username email type');
+  else if (body.filter === 'all') response = await User.findOne({ _id });
 
   if (response === {}) return res.status(404).json();
   return res.status(200).json(response);
@@ -71,14 +73,8 @@ router.patch('/patch/:_id', async (req, res) => {
     email?: string;
     type?: 'user' | 'admin';
   } = req.body;
-  await User.findOneAndUpdate(
-    { _id },
-    {
-      username: body.username,
-      email: body.email,
-      type: body.type,
-    }
-  );
+
+  await User.findOneAndUpdate({ _id }, { ...body });
   return res.status(200);
 });
 
