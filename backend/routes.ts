@@ -15,3 +15,6 @@ routes.use('/user', user_routes);
 
 import email_routes from './api/routes/email';
 routes.use('/email', email_routes);
+
+import todo_routes from './api/routes/todo';
+routes.use('/todo', todo_routes);
