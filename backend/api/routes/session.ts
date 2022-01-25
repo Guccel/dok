@@ -2,9 +2,7 @@
  * These routes will handle all session requests
  * DOES NOT HANDLE SESSION CREATION -see POST /user/login
  */
-
 //# imports
-import { session } from 'T_routes';
 import { Router } from 'express';
 import { verify, getData } from '../helpers/session';
 
@@ -19,9 +17,9 @@ router.head('/verify/:session_id', async (req, res) => {
   const session_id: string = req.params.session_id;
 
   if (!session_id) return res.status(400); // return if bad request
-  if (await verify(session_id)) return res.status(200)
+  if (await verify(session_id)) return res.status(200);
   // returns if session exists
-  else return res.status(404) // returns if session does not exist
+  else return res.status(404); // returns if session does not exist
 });
 
 //## GET /session/get-data/:session_id

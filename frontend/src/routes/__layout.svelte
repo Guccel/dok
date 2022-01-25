@@ -4,7 +4,7 @@
 
 {JSON.stringify($session)}
 <p>
-	logged in: {$session.user.authenticated}<br />
+	logged in: {$session.user.data.type != 'unauthenticated'}<br />
 	is admin: {$session.user.data.type == 'admin'}
 </p>
 
