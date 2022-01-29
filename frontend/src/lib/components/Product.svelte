@@ -1,6 +1,5 @@
 <script lang="ts">
 	import axios from 'axios';
-	import { createEventDispatcher } from 'svelte';
 	const types = ['basic', 'all'];
 
 	export let _id = '';
@@ -9,7 +8,6 @@
 		type = 'basic';
 	}
 
-	const dispatch = createEventDispatcher();
 
 	$: response_promise = axios({
 		method: 'POST',
