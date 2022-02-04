@@ -6,7 +6,7 @@ import { v4 as uuidv4 } from 'uuid';
 const todoSchema = new Schema({
   _id: { type: String, default: uuidv4() },
   title: { type: String, required: true },
-  desc: { type: String, required: true },
+  description: { type: String, required: true },
   author: { type: String, required: true },
   assign: { type: [String], default: ['null'] },
 });

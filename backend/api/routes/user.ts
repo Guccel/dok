@@ -22,14 +22,13 @@ export default router;
 router.post('/', async (req, res) => {
   const body: {
     filter: 'all' | 'user' | 'admin';
-    // filter?: null;
   } = req.body;
 
   let users = [];
 
-  if (body.filter === 'all') users = await User.find();
-  else if (body.filter === 'user') users = await User.find({ type: 'user' });
-  else if (body.filter === 'admin') users = await User.find({ type: 'admin' });
+  if (body.filter === 'all') users = await User.find().select('_id');
+  else if (body.filter === 'user') users = await User.find({ type: 'user' }).select('_id');
+  else if (body.filter === 'admin') users = await User.find({ type: 'admin' }).select('_id');
 
   const response: {
     length: number;
@@ -135,4 +134,10 @@ router.post('/login', async (req, res) => {
   };
 
   return res.status(201).json(response);
+});
+
+//## GET /user/bulk
+router.get('/bulk', async (req, res) => {
+  const users = await User.find();
+  return res.status(200).json(users);
 });
